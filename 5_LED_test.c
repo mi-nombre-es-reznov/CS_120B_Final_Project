@@ -144,6 +144,7 @@ void LEDs()
         {
             score = 0;
             curr = LED_Init;
+            LCD_Cursor(1);
             LCD_WriteData(score + '0');
             break;
         }
@@ -174,13 +175,21 @@ void LEDs()
         }
         case(LED_Wrong):
         {
-            score = (score - 1);
+            if(score > 0)
+            {
+                score = (score - 1);
+            }
+            LCD_Cursor(1);
             LCD_WriteData(score + '0');
             break;
         }
         case(LED_Right):
         {
-            score = (score + 1);
+            if(score < 20)
+            {
+                score = (score + 1);
+            }
+            LCD_Cursor(1);
             LCD_WriteData(score + '0');
             break;
         }
@@ -204,7 +213,7 @@ int main(void)
     LCD_init();
     LCD_ClearScreen();
     
-    TimerSet(500);
+    TimerSet(100);
     TimerOn();
     /* Replace with your application code */
     while (1) 

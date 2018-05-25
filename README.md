@@ -11,4 +11,4 @@ to see the start of a project versus the completed product that is typically mas
 
 <br><br><br>
 
-<p><img alt="Breadboard" src="breadboard.jpg" title="Awesome!"/></p>
+<p><img alt="Breadboard" src="breadboard.jpg" title="Awesome! This is the start of somthing amazing!!!"/></p>

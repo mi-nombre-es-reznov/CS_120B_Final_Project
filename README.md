@@ -17,5 +17,5 @@ to see the start of a project versus the completed product that is typically mas
 
 <h2>Beginning of LCD screen</h2>
 <p>This is the layout for the beginning messages of my LCD display. This statically gives you a dynamic perspective of what the code will display on the screen.<br>
-<img alt="Beginning LCD display" src="first_pt_LCD_screen.JPG" title="The 'Paint' made version of an LCD display, showcasing (as you go down) a dynaimic version of the LCD screen display
-at the beginnning of the game, before 'START'." /></p>
+<img alt="Beginning LCD display" src="first_pt_LCD_screen.JPG" title="The 'Paint' made version of an LCD display, showcasing (as you go down) a dynamic version of the LCD screen display
+at the beginning of the game, before 'START'." /></p>

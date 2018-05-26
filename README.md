@@ -16,12 +16,10 @@ to see the start of a project versus the completed product that is typically mas
 <br><br><br>
 
 <h2>Beginning of LCD screen</h2>
-<p>This is the layout for the beginning messages of my LCD display. This statically gives you a dynamic perspective of what the code will display on the screen.<br>
+<p>This is the layout for the beginning messages of my LCD display. This statically gives you a dynamic perspective of what the code will display on the screen.<br><br>
 <img alt="Beginning LCD display" src="first_pt_LCD_screen.JPG" title="The 'Paint' made version of an LCD display, showcasing (as you go down) a dynamic version of the LCD screen display
 at the beginning of the game, before 'START'." /></p>
 
-<br>
-
 <p>After 5 different attempts at creating a working Finite State Machine (FSM), this one seems to be the most promising. This is also the one that I will be pushing my test code for to
-test if it works properly. If this test code works as intended, then I shall stick with this one and use it in the final project - as the intro screen before 'START'.
+test if it works properly. If this test code works as intended, then I shall stick with this one and use it in the final project - as the intro screen before 'START'. <br><br>
 <img alt="Intro LCD FSM" src ="LCD_intro_FSM.jpeg" title="This is the Finite State Machine (FSM) that will be used to construct the first seen intro screen on the LCD display" /></p>

@@ -20,7 +20,7 @@ to see the start of a project versus the completed product that is typically mas
 <img alt="Beginning LCD display" src="first_pt_LCD_screen.JPG" title="The 'Paint' made version of an LCD display, showcasing (as you go down) a dynamic version of the LCD screen display
 at the beginning of the game, before 'START'." /></p>
 
-<br><br>
+<br>
 
 <p>After 5 different attempts at creating a working Finite State Machine (FSM), this one seems to be the most promising. This is also the one that I will be pushing my test code for to
 test if it works properly. If this test code works as intended, then I shall stick with this one and use it in the final project - as the intro screen before 'START'.

@@ -11,4 +11,11 @@ to see the start of a project versus the completed product that is typically mas
 
 <br><br><br>
 
-<p><img alt="Breadboard" src="breadboard.jpg" title="Awesome! This is the start of somthing amazing!!!"/></p>
+<p><img alt="Breadboard" src="breadboard.jpg" title="Awesome! This is the start of somthing amazing!!!" /></p>
+
+<br><br><br>
+
+<h2>Beggining of LCD screen</h2>
+<p>This is the layout for the beginning messages of my LCD display. This statically gives you a dynamic perspective of what the code will display on the screen.<br>
+<img alt="Beginning LCD display" src="first_pt_LCD_screen.jpg" title="The 'Paint' made version of an LCD display, showcasing (as you go down) a dynaimic version of the LCD screen display
+at the beginnning of the game, before 'START'." /></p>

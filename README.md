@@ -16,8 +16,6 @@ to see the start of a project versus the completed product that is typically mas
 <br><br><br>
 
 <h2>Beginning of LCD screen</h2>
----
-
 <p>This is the layout for the beginning messages of my LCD display. This statically gives you a dynamic perspective of what the code will display on the screen.<br><br>
 <img alt="Beginning LCD display" src="first_pt_LCD_screen.JPG" title="The 'Paint' made version of an LCD display, showcasing (as you go down) a dynamic version of the LCD screen display
 at the beginning of the game, before 'START'." /></p>
@@ -29,6 +27,7 @@ test if it works properly. If this test code works as intended, then I shall sti
 <br><br>
 
 <h3>Test of the intro screen</h3>
+---
 
 <p>Here are a few of the results on screen after running the <em>Beginning_Messages.c</em> file.<br><br>This is the scrolling message that the player will see upon powering on the game!<br>
 <img src="Welcome_to_the.JPG" alt="Display of first part of the intro message, 'Welcome_to_the'." title="Scrolling intro message on LCD screen"/></p>

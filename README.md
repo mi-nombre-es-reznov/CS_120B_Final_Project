@@ -35,3 +35,5 @@ test if it works properly. If this test code works as intended, then I shall sti
 
 <p>Here is the second message that appears after the first finishes its cycle.<br><br>This is the flashing message that states, "Beat Trainer!"<br>
 <img src="Beat_Trainer.JPG" alt="Beat Trainer" title="Secondary intro message that flashes 'Beat Trainer'."/></p>
+
+<p>If you would like to see the video of the code in action, you can see it <a href="https://youtu.be/miQS9gsfXd8"/>NOW!</p>

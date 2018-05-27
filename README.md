@@ -26,4 +26,7 @@ test if it works properly. If this test code works as intended, then I shall sti
 
 <br><br>
 
-<h3>                    Test of the intro screen</h3>
+<h3>Test of the intro screen</h3>
+
+<p>Here are a few of the results on screen after running the <em>Beginning_Messages.c</em> file.<br><br>
+<img src="Welcome_to_the.JPG" alt="Display of top intro message, 'Welcome_to_the'." title="Top scrolling intro message on LCD screen"/></p>

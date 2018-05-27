@@ -30,3 +30,8 @@ test if it works properly. If this test code works as intended, then I shall sti
 
 <p>Here are a few of the results on screen after running the <em>Beginning_Messages.c</em> file.<br><br>This is the scrolling message that the player will see upon powering on the game!<br>
 <img src="Welcome_to_the.JPG" alt="Display of first part of the intro message, 'Welcome_to_the'." title="Scrolling intro message on LCD screen"/></p>
+
+<br>
+
+<p>Here is the second message that appears after the first finishes its cycle.<br><br>This is the flashing message that states, "Beat Trainer!"<br>
+<img src="Beat_Trainer.JPG" alt="Beat Trainer" title="Secondary intro message that flashes 'Beat Trainer'."/></p>

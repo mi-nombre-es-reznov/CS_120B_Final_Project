@@ -1,12 +1,14 @@
 // This is the first part of the LCD display that will scoll in through both sides, hard-coded.
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "timer.h"
 #include "io.c"
 #include "io.h"
 
-enum Intro_LCD{Intro_SMStart, Intro_Init, Intro_Stage1, Intro_Stage2, Intro_Stage3, Intro_Stage4,
-Intro_Stage5, Intro_Stage6, Intro_Stage7, Intro_Stage8, Intro_Stage9, Intro_StageA, Intro_StageB} Intro_state;
+unsigned char count = 0;
+enum Intro_LCD{Intro_SMStart, Intro_Init, Intro_Stage1, Intro_Stage2, Intro_Stage3, 
+    Intro_Stage4, Intro_Stage5, Intro_Stage6, Intro_Stage7, Intro_Stage8, Intro_Stage9, 
+    Intro_StageA, Intro_StageB, Intro_Wait, Intro_Beat_Trainer, Intro_Wait2} Intro_state;
 
 void Intro()
 {
@@ -32,6 +34,11 @@ void Intro()
             Intro_state = Intro_Stage3;
             break;
         }
+        case(Intro_Stage3):
+        {
+            Intro_state = Intro_Stage4;
+            break;
+        }
         case(Intro_Stage4):
         {
             Intro_state = Intro_Stage5;
@@ -54,24 +61,26 @@ void Intro()
         }
         case(Intro_Stage8):
         {
-            Intro_state = Intro_Stage9;
+            Intro_state = Intro_Stage9; 
             break;
         }
         case(Intro_Stage9):
         {
-            Intro_state = Intro_StageA;
+            Intro_state = Intro_Wait;
             break;
         }
-        case(Intro_StageA):
-        {
-            Intro_state = Intro_StageB;
-            break;
-        }
-        case(Intro_StageB):
+        case(Intro_Wait):
         {
             break;
         }
-
+        case(Intro_Beat_Trainer):
+        {
+            break;
+        }
+        case(Intro_Wait2):
+        {
+            break;
+        }
         default:
         {
             Intro_state = Intro_Init;
@@ -122,41 +131,98 @@ void Intro()
         }
         case(Intro_Stage7):
         {
-             LCD_DisplayString(1, "Welcome                  to the");
-             break;
+            LCD_DisplayString(1, "Welcome                  to the");
+            break;
         }
         case(Intro_Stage8):
         {
-             LCD_DisplayString(1, " Welcome                to the");
-             break;
+            LCD_DisplayString(1, " Welcome                to the");
+            break;
         }
-       case(Intro_Stage9):
+        case(Intro_Stage9):
         {
-             LCD_DisplayString(1, "  Welcome              to the");
-             break;
+            LCD_DisplayString(1, "  Welcome              to the");
+            break;
         }
-      case(Intro_StageA):
+        case(Intro_Wait):
         {
-             LCD_DisplayString(1, "   Welcome            to the");
-             break;
+            if(count < 1)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+                Intro_state = Intro_Beat_Trainer;
+                count = 0;
+            }
+            
+            count++;
+            break;
         }
-      case(Intro_StageB):
+        case(Intro_Beat_Trainer):
         {
-             LCD_DisplayString(1, "    Welcome          to the");
-             break;
+            count++;
+            if(count <= 9)
+            {
+                if(count % 2 == 0)
+                {
+                    LCD_DisplayString(7, "Beat          Trainer!");
+                }
+                else
+                {
+                    LCD_ClearScreen();
+                }
+            }
+            else
+            {
+                LCD_DisplayString(7, "Beat          Trainer!");
+                Intro_state = Intro_Wait2;
+                count = 0;
+            }   
+            
+            break;
         }
-      default:
+        case(Intro_Wait2):
+        {
+            if(count <= 2)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+            }
+            
+            count++;
+            break;
+        }
+        default:
         {
             LCD_DisplayString(5, "Error!!!");
             break;
         }
     }
-}    
+}
 
 int main()
 {
+    DDRA = 0x03;    PORTA = 0xFC;
+    DDRD = 0xFF;    PORTD = 0x00;
+    
+    LCD_init();
+    LCD_ClearScreen();
+    
+    TimerSet(650);
+    TimerOn();
+    
     while(1)
     {
+        Intro();
         
+        while(!TimerFlag);
+        TimerFlag = 0;
     }
+    
+    return 0;
 }

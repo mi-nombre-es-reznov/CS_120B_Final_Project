@@ -23,3 +23,7 @@ at the beginning of the game, before 'START'." /></p>
 <p>After 5 different attempts at creating a working Finite State Machine (FSM), this one seems to be the most promising. This is also the one that I will be pushing my test code for to
 test if it works properly. If this test code works as intended, then I shall stick with this one and use it in the final project - as the intro screen before 'START'. <br><br>
 <img alt="Intro LCD FSM" src ="LCD_intro_FSM.jpeg" title="This is the Finite State Machine (FSM) that will be used to construct the first seen intro screen on the LCD display" /></p>
+
+<br><br>
+
+<h3>                    Test of the intro screen</h3>

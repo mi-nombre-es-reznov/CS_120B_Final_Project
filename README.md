@@ -38,3 +38,9 @@ test if it works properly. If this test code works as intended, then I shall sti
 <img src="Beat_Trainer.JPG" alt="Beat Trainer" title="Secondary intro message that flashes 'Beat Trainer'."/></p>
 
 <p><strong>If you would like to see the video of the code in action, you can see it <a href="https://youtu.be/miQS9gsfXd8" title="Let's go see it!!!"/>NOW!</strong></p>
+
+<br><br>
+
+<h2>Joystick</h2>
+<p>I conducted a test to get the joystick working in the four main directions: north (up), south (down), east (right) and west (left).<br>
+The video showing some results is found <a href="https://youtu.be/vbepWqkhsp4" title="An early model of the working joystick">HERE!</a></p>

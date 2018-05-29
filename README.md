@@ -42,5 +42,5 @@ test if it works properly. If this test code works as intended, then I shall sti
 <br><br>
 
 <h2>Joystick</h2>
-<p>I conducted a test to get the joystick working in the four main directions: north (up), south (down), east (right) and west (left).<br>
-The video showing some results is found <a href="https://youtu.be/vbepWqkhsp4" title="An early model of the working joystick">HERE!</a></p>
+<p><strong>I conducted a test to get the joystick working in the four main directions: north (up), south (down), east (right) and west (left).<br>
+The video showing some results is found <a href="https://youtu.be/vbepWqkhsp4" title="An early model of the working joystick"/>HERE!</strong></p>

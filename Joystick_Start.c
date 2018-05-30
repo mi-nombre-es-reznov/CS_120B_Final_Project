@@ -9,14 +9,14 @@
 #include "timer.h"
 
 // Created characters for LCD screen
-	unsigned char Character1[] = { 0x1f,0x11,0x15,0x15,0x15,0x15,0x11,0x1f };    // Unpressed button
-	unsigned char Character2[] = { 0x0,0xe,0xe,0xe,0xe,0xe,0xe,0x0 };            // Pressed button
-	unsigned char Character3[] = { 0x0,0x4,0x6,0x1f,0x6,0x4,0x0,0x0 };           // Right Arrow
-	unsigned char Character4[] = { 0x0,0x4,0xc,0x1f,0xc,0x4,0x0,0x0 };           // Left Arrow
-	unsigned char Character5[] = { 0x4,0xe,0xe,0x1f,0x1f,0x4,0x4,0x4 };          // Up Arrow
-	unsigned char Character6[] = { 0x4,0x4,0x4,0x1f,0x1f,0xe,0xe,0x4 };          // Down Arrow
-	unsigned char Character7[] = { 0x11,0x11,0x11,0x11,0x1f,0x1f,0x1f,0x1f };    // Hand
-	unsigned char Character8[] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    // Headphones
+	unsigned char Character1[8] = { 0x1f,0x11,0x15,0x15,0x15,0x15,0x11,0x1f };    // Unpressed button
+	unsigned char Character2[8] = { 0x0,0xe,0xe,0xe,0xe,0xe,0xe,0x0 };            // Pressed button
+	unsigned char Character3[8] = { 0x0,0x4,0x6,0x1f,0x6,0x4,0x0,0x0 };           // Right Arrow
+	unsigned char Character4[8] = { 0x0,0x4,0xc,0x1f,0xc,0x4,0x0,0x0 };           // Left Arrow
+	unsigned char Character5[8] = { 0x4,0xe,0xe,0x1f,0x1f,0x4,0x4,0x4 };          // Up Arrow
+	unsigned char Character6[8] = { 0x4,0x4,0x4,0x1f,0x1f,0xe,0xe,0x4 };          // Down Arrow
+	unsigned char Character7[8] = { 0x11,0x11,0x11,0x11,0x1f,0x1f,0x1f,0x1f };    // Hand
+	unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    // Headphones
         
 // Global Variables
 unsigned char count;
@@ -43,6 +43,11 @@ void Start_Screen()
             St_state = St_Wait;
             break;
         }
+        case(St_Wait):
+        {
+            St_state = St_Wait;
+            break;
+        }
         default:
         {
             St_state = St_Init;
@@ -63,20 +68,30 @@ void Start_Screen()
         }
         case(St_Disp):
         {
-            LCD_DisplayString(7, "Press           Start");
+            LCD_DisplayString(3, "Press Start!");
             break;
         }
         case(St_Wait):
         {
-            if(count < 3)
+            LCD_Cursor(24);
+            
+            if(count % 2)
             {
-                
+                LCD_Char(0);
             }
             else
             {
-                LCD_ClearScreen();
+                LCD_Char(1);
             }
             
+            count++;
+            
+            break;
+        }
+        default:
+        {
+            LCD_ClearScreen();
+            LCD_DisplayString(6, "ERROR");
             break;
         }
     }
@@ -91,7 +106,7 @@ int main()
     TimerSet(500);
     TimerOn();
 	
-    unsigned char i;
+    //unsigned char i;
     
 	LCD_Custom_Char(0, Character1);  /* Build Character1 at position 0 */
 	LCD_Custom_Char(1, Character2);  /* Build Character2 at position 1 */
@@ -104,19 +119,19 @@ int main()
 
 	LCD_Command(0x80);		/*cursor at home position */
 	//LCD_String("Custom LCD overwrite");
-	LCD_DisplayString(1, "Custom LCD test");
+	//LCD_DisplayString(1, "Custom LCD test");
     LCD_Command(0xc0);
 	
-	for(i=0;i<8;i++)		/* function will send data 1 to 8 to lcd */
-	{
-    	LCD_Char(i);		/* char at 'i'th position will display on lcd */
-    	LCD_Char(' ');		/* space between each custom char. */
-	}
-	/*while(1)
+    //for(i=0;i<8;i++)		/* function will send data 1 to 8 to lcd */
+	//{
+    //	LCD_Char(i);		/* char at 'i'th position will display on lcd */
+    //	LCD_Char(' ');		/* space between each custom char. */
+	//} */
+	while(1)
     {
         Start_Screen();
         
         while(!TimerFlag);
         TimerFlag = 0;
-    }*/
+    }
 }

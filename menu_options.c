@@ -197,14 +197,17 @@ void Menu()
             if (x >= 0 && x < 2*temp)
             {
                 pos = left;
+                LCD_DisplayString(1,"Left!!");
             }
             else if(x >= 4*temp && x < 6*temp)
             {
                 pos = right;
+                LCD_DisplayString(1, "Right!!");
             }
             else if (x >= 3*temp && x < 6*temp)
             {
                 pos = same;
+                LCD_DisplayString(1, "Center!!");
             }
             
             if((~PINA & 0x20) == 0x20)
@@ -220,10 +223,12 @@ void Menu()
 
             if(y < 30)
             {
+                LCD_DisplayString(1, "up!!!");
                 pos = up;
             }
             else if(y >= 4*temp && y < 6*temp)
             {
+                LCD_DisplayString(1, "down!!");
                 pos = down;
             }
 
@@ -231,26 +236,14 @@ void Menu()
             {
                 pos = start;
             }
+            
+            break;
         }
         case(M_Training):
         {   
             LCD_Clear(); 
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_String(" Training??");
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
-            LCD_Char(' ');
+            LCD_DisplayString(4,"Training??");
+            LCD_Cursor(32);
             LCD_Char(2);
 
             break;
@@ -258,7 +251,11 @@ void Menu()
         case(M_Whole):
         {
             LCD_Clear();
-            LCD_String("     Whole            Notes!");
+            LCD_String("  Whole Notes!");
+            LCD_Cursor(17);
+            LCD_Char(4);
+            LCD_Cursor(32);
+            LCD_Char(5);
             break;
         }            
     }
@@ -269,6 +266,12 @@ int main()
     //DDRA = 0x07; PORTA = 0xF8;
     DDRB = 0xFF; PORTB = 0x00;
     DDRD = 0xFF; PORTD = 0x00;
+    
+    // Set the timer and turn it on
+    TimerSet(500);
+    TimerOn();
+    LCD_Init();
+    LCD_ClearScreen();
     
     ADC_Init(5, 1, 1);
 
@@ -283,12 +286,6 @@ int main()
 
     LCD_Command(0x80);		/*cursor at home position */
     LCD_Command(0xc0);    
-    
-    // Set the timer and turn it on
-    TimerSet(350);
-    TimerOn();
-    LCD_Init();
-    LCD_ClearScreen();
 
     unsigned short i; // Scheduler for-loop iterator
 

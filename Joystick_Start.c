@@ -140,9 +140,7 @@ int main()
 	LCD_Init();
     TimerSet(500);
     TimerOn();
-	
-    //unsigned char i;
-    
+	   
 	LCD_Custom_Char(0, Character1);  /* Build Character1 at position 0 */
 	LCD_Custom_Char(1, Character2);  /* Build Character2 at position 1 */
 	LCD_Custom_Char(2, Character3);  /* Build Character3 at position 2 */
@@ -153,15 +151,8 @@ int main()
 	LCD_Custom_Char(7, Character8);  /* Build Character6 at position 7 */
 
 	LCD_Command(0x80);		/*cursor at home position */
-	//LCD_String("Custom LCD overwrite");
-	//LCD_DisplayString(1, "Custom LCD test");
     LCD_Command(0xc0);
 	
-    //for(i=0;i<8;i++)		/* function will send data 1 to 8 to lcd */
-	//{
-    //	LCD_Char(i);		/* char at 'i'th position will display on lcd */
-    //	LCD_Char(' ');		/* space between each custom char. */
-	//} */
 	while(1)
     {
         Start_Screen();

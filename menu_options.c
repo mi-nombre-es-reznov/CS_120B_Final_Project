@@ -20,12 +20,13 @@ unsigned char Character5[8] = { 0x4,0xe,0xe,0x1f,0x1f,0x4,0x4,0x4 };          //
 unsigned char Character6[8] = { 0x4,0x4,0x4,0x1f,0x1f,0xe,0xe,0x4 };          // Down Arrow
 unsigned char Character7[8] = { 0x11,0x11,0x11,0x11,0x1f,0x1f,0x1f,0x1f };    // Hand
 unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    // Headphones
-    
+
 // Global variables
 unsigned long x, y = 0;
 unsigned char whole, half, quarter, eighth, sixteenth, performance, pos, left, right, up, down, same, start, curr;
 
-enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_Whole, M_Half, M_Quarter, M_Eighth, M_Sixteenth, M_Performance} state;
+enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait,
+     M_Whole, M_Half, M_Quarter, M_Eighth, M_Sixteenth, M_Performance} state;
 
 void Menu()
 {
@@ -57,17 +58,31 @@ void Menu()
         }
         case(M_Training):
         {
-            if(pos == up)
+            state = M_T_Wait;
+
+            break;
+        }
+        case(M_T_Wait):
+        {
+            x = ADC_ReadData(3);
+            y = ADC_ReadData(4);
+            
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            {
+                
+            }
+            else if((y < 30))
             {
                 state = M_Whole;
             }
-            else if(pos == right)
+            else if(x >= 4*temp && x < 6*temp)
             {
                 state = M_Performance;
             }
             else
             {
-                state = M_X;
+                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
+                state = M_Training;
             }
             
             break;
@@ -111,7 +126,7 @@ void Menu()
             if(pos == up)
             {
                 state = M_Eighth;
-            }            
+            }
             else if(pos == down)
             {
                 state = M_Half;
@@ -155,14 +170,14 @@ void Menu()
         }
         case(M_Performance):
         {
-            if(pos == left)
+            /*if(pos == left)
             {
                 state = M_Training;
             }
             else
             {
                 state = M_X;
-            }
+            }*/
             
             break;
         }
@@ -226,6 +241,11 @@ void Menu()
                 LCD_DisplayString(1, "up!!!");
                 pos = up;
             }
+            else if(y >= 30 && y < 4*temp)
+            {
+                LCD_DisplayString(1, "Zero-y!!!");
+                pos = same;
+            }
             else if(y >= 4*temp && y < 6*temp)
             {
                 LCD_DisplayString(1, "down!!");
@@ -240,12 +260,16 @@ void Menu()
             break;
         }
         case(M_Training):
-        {   
-            LCD_Clear(); 
+        {
+            LCD_Clear();
             LCD_DisplayString(4,"Training??");
             LCD_Cursor(32);
             LCD_Char(2);
 
+            break;
+        }
+        case(M_T_Wait):
+        {
             break;
         }
         case(M_Whole):
@@ -256,8 +280,18 @@ void Menu()
             LCD_Char(4);
             LCD_Cursor(32);
             LCD_Char(5);
+            
             break;
-        }            
+        }
+        case(M_Performance):
+        {
+            LCD_Clear();
+            LCD_String(" Performance???");
+            LCD_Cursor(32);
+            LCD_Char(4);
+            
+            break;
+        }
     }
 }
 
@@ -285,7 +319,7 @@ int main()
     LCD_Custom_Char(7, Character8);  /* Build Character6 at position 7 */
 
     LCD_Command(0x80);		/*cursor at home position */
-    LCD_Command(0xc0);    
+    LCD_Command(0xc0);
 
     unsigned short i; // Scheduler for-loop iterator
 

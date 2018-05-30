@@ -23,10 +23,10 @@ unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    //
 
 // Global variables
 unsigned long x, y = 0;
-unsigned char whole, half, quarter, eighth, sixteenth, performance, pos, left, right, up, down, same, start, curr;
+//unsigned char whole, half, quarter, eighth, sixteenth, performance, pos, left, right, up, down, same, start, curr;
 
-enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait,
-     M_Whole, M_Half, M_Quarter, M_Eighth, M_Sixteenth, M_Performance} state;
+enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait, M_Whole, M_W_Wait, M_Half, M_H_Wait, M_Quarter, M_Q_Wait,
+     M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait} state;
 
 void Menu()
 {
@@ -42,7 +42,7 @@ void Menu()
         }
         case(M_Init):
         {
-            curr = M_Training;
+            //curr = M_Training;
             state = M_X;
             break;
         }
@@ -53,7 +53,7 @@ void Menu()
         }
         case(M_Y):
         {
-            state = curr;
+            state = M_Training;
             break;
         }
         case(M_Training):
@@ -89,58 +89,73 @@ void Menu()
         }
         case(M_Whole):
         {
-            if(pos == up)
+            state = M_W_Wait;
+            break;
+        }
+        case(M_W_Wait):
+        {
+            x = ADC_ReadData(3);
+            y = ADC_ReadData(4);
+            
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            {
+                
+            }
+            else if((y < 30))
             {
                 state = M_Half;
             }
-            else if(pos == down)
+            else if(y >= 4*temp && y < 6*temp)
             {
                 state = M_Training;
             }
             else
             {
-                state = M_X;
+                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
+                state = M_Whole;
             }
             
             break;
         }
         case(M_Half):
         {
-            if(pos == up)
+            state = M_H_Wait;
+            
+            break;
+        }
+        case(M_H_Wait):
+        {
+            x = ADC_ReadData(3);
+            y = ADC_ReadData(4);
+            
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            {
+                
+            }
+            else if((y < 30)) // Up
             {
                 state = M_Quarter;
             }
-            else if(pos == down)
+            else if(y >= 4*temp && y < 6*temp) // Right
             {
                 state = M_Whole;
             }
             else
             {
-                state = M_X;
+                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
+                state = M_Half;
             }
             
             break;
         }
         case(M_Quarter):
         {
-            if(pos == up)
-            {
-                state = M_Eighth;
-            }
-            else if(pos == down)
-            {
-                state = M_Half;
-            }
-            else
-            {
-                state = M_X;
-            }
             
             break;
         }
         case(M_Eighth):
         {
-            if(pos == up)
+            /*if(pos == up)
             {
                 state = M_Sixteenth;
             }
@@ -151,33 +166,46 @@ void Menu()
             else
             {
                 state = M_X;
-            }
+            }*/
             
             break;
         }
         case(M_Sixteenth):
         {
-            if(pos == down)
+            /*if(pos == down)
             {
                 state = M_Eighth;
             }
             else
             {
                 state = M_X;
-            }
+            }*/
             
             break;
         }
         case(M_Performance):
         {
-            /*if(pos == left)
+            state = M_P_Wait;
+            break;
+        }
+        case(M_P_Wait):
+        {
+            x = ADC_ReadData(3);
+            y = ADC_ReadData(4);
+            
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            {
+                
+            }
+            else if(x >= 0 && x < 2*temp)
             {
                 state = M_Training;
             }
             else
             {
-                state = M_X;
-            }*/
+                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
+                state = M_Performance;
+            }
             
             break;
         }
@@ -197,12 +225,12 @@ void Menu()
         case(M_Init):
         {
             PORTB = 0x00;
-            whole = 0;
-            half = 0;
-            quarter = 0;
-            eighth = 0;
-            sixteenth = 0;
-            performance = 0;
+            //whole = 0;
+            //half = 0;
+            //quarter = 0;
+            //eighth = 0;
+            //sixteenth = 0;
+            //performance = 0;
             LCD_Clear();
             break;
         }
@@ -211,23 +239,23 @@ void Menu()
             x = ADC_ReadData(3);
             if (x >= 0 && x < 2*temp)
             {
-                pos = left;
+                //pos = left;
                 LCD_DisplayString(1,"Left!!");
             }
             else if(x >= 4*temp && x < 6*temp)
             {
-                pos = right;
+                //pos = right;
                 LCD_DisplayString(1, "Right!!");
             }
             else if (x >= 3*temp && x < 6*temp)
             {
-                pos = same;
+                //pos = same;
                 LCD_DisplayString(1, "Center!!");
             }
             
             if((~PINA & 0x20) == 0x20)
             {
-                pos = start;
+                //pos = start;
             }
             
             break;
@@ -239,22 +267,22 @@ void Menu()
             if(y < 30)
             {
                 LCD_DisplayString(1, "up!!!");
-                pos = up;
+                //pos = up;
             }
             else if(y >= 30 && y < 4*temp)
             {
                 LCD_DisplayString(1, "Zero-y!!!");
-                pos = same;
+                //pos = same;
             }
             else if(y >= 4*temp && y < 6*temp)
             {
                 LCD_DisplayString(1, "down!!");
-                pos = down;
+                //pos = down;
             }
 
             if((~PINA & 0x20) == 0x20)
             {
-                pos = start;
+                //pos = start;
             }
             
             break;
@@ -263,6 +291,8 @@ void Menu()
         {
             LCD_Clear();
             LCD_DisplayString(4,"Training??");
+            LCD_Cursor(17);
+            LCD_Char(4);
             LCD_Cursor(32);
             LCD_Char(2);
 
@@ -283,13 +313,52 @@ void Menu()
             
             break;
         }
+        case(M_W_Wait):
+        {
+            break;
+        }
+        case(M_Half):
+        {
+            LCD_Clear();
+            LCD_String("  Half Notes!!");
+            LCD_Cursor(17);
+            LCD_Char(4);
+            LCD_Cursor(32);
+            LCD_Char(5);
+            
+            break;
+        }
+        case(M_H_Wait):
+        {
+            break;
+        }
+        case(M_Quarter):
+        {
+            LCD_Clear();
+            LCD_String(" Quarter Notes!");
+            LCD_Cursor(17);
+            LCD_Char(4);
+            LCD_Cursor(32);
+            LCD_Char(5);
+            
+            break;
+        }
         case(M_Performance):
         {
             LCD_Clear();
             LCD_String(" Performance???");
-            LCD_Cursor(32);
-            LCD_Char(4);
+            LCD_Cursor(17);
+            LCD_Char(3);
             
+            break;
+        }
+        case(M_P_Wait):
+        {
+            break;
+        }
+        default:
+        {
+            LCD_DisplayString(4, "ERROR!");
             break;
         }
     }

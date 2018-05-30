@@ -22,7 +22,7 @@
 unsigned char count;
 
 // States
-enum St_States{St_SMStart, St_Init, St_Disp, St_Van, St_Wait} St_state;
+enum St_States{St_SMStart, St_Init, St_Disp, St_Van, St_Wait, St_Pressed, St_Press_Wait} St_state;
 
 void Start_Screen()
 {
@@ -48,9 +48,18 @@ void Start_Screen()
             St_state = St_Wait;
             break;
         }
+        case(St_Pressed):
+        {
+            break;
+        }
+        case(St_Press_Wait):
+        {
+            break;
+        }
         default:
         {
             St_state = St_Init;
+            break;
         }
     }
     
@@ -84,8 +93,34 @@ void Start_Screen()
                 LCD_Char(1);
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                LCD_ClearScreen();
+                St_state = St_Pressed;
+            }
             count++;
             
+            break;
+        }
+        case(St_Pressed):
+        {
+            LCD_DisplayString(6, "Button         Pressed!");
+            St_state = St_Press_Wait;
+            count = 0;
+            break;
+        }
+        case(St_Press_Wait):
+        {
+            if(count <= 4)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+            }
+            
+            count++;
             break;
         }
         default:
@@ -99,7 +134,7 @@ void Start_Screen()
 
 int main()
 {
-    DDRA = 0xFF; PORTA = 0x00;
+    DDRA = 0x0F; PORTA = 0xF0;
     DDRD = 0xFF; PORTD = 0x00;
 
 	LCD_Init();

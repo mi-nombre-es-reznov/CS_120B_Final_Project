@@ -150,36 +150,87 @@ void Menu()
         }
         case(M_Quarter):
         {
+            state = M_Q_Wait;
+            break;
+        }
+        case(M_Q_Wait):
+        {
+            x = ADC_ReadData(3);
+            y = ADC_ReadData(4);
+            
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            {
+                
+            }
+            else if((y < 30)) // Up
+            {
+                state = M_Eighth;
+            }
+            else if(y >= 4*temp && y < 6*temp) // Down
+            {
+                state = M_Half;
+            }
+            else
+            {
+                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
+                state = M_Quarter;
+            }
             
             break;
         }
         case(M_Eighth):
+        {       
+            state = M_E_Wait;
+            break;
+        }
+        case(M_E_Wait):
         {
-            /*if(pos == up)
+            x = ADC_ReadData(3);
+            y = ADC_ReadData(4);
+            
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            {
+                
+            }
+            else if((y < 30)) // Up
             {
                 state = M_Sixteenth;
             }
-            else if(pos == down)
+            else if(y >= 4*temp && y < 6*temp) // Down
             {
                 state = M_Quarter;
             }
             else
             {
-                state = M_X;
-            }*/
+                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
+                state = M_Eighth;
+            }
             
             break;
         }
         case(M_Sixteenth):
         {
-            /*if(pos == down)
+            state = M_S_Wait;
+            break;
+        }
+        case(M_S_Wait):
+        {
+            x = ADC_ReadData(3);
+            y = ADC_ReadData(4);
+            
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            {
+                
+            }
+            else if(y >= 4*temp && y < 6*temp) // Down
             {
                 state = M_Eighth;
             }
             else
             {
-                state = M_X;
-            }*/
+                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
+                state = M_Sixteenth;
+            }
             
             break;
         }
@@ -341,6 +392,38 @@ void Menu()
             LCD_Cursor(32);
             LCD_Char(5);
             
+            break;
+        }
+        case(M_Q_Wait):
+        {
+            break;
+        }
+        case(M_Eighth):
+        {
+            LCD_Clear();
+            LCD_String(" Eighth Notes!!");
+            LCD_Cursor(17);
+            LCD_Char(4);
+            LCD_Cursor(32);
+            LCD_Char(5);
+            
+            break;
+        }
+        case(M_E_Wait):
+        {
+            break;
+        }
+        case(M_Sixteenth):
+        {
+            LCD_Clear();
+            LCD_String("Sixteenth Notes!");
+            LCD_Cursor(32);
+            LCD_Char(5);
+            
+            break;
+        }
+        case(M_S_Wait):
+        {
             break;
         }
         case(M_Performance):

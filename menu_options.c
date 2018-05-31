@@ -26,7 +26,7 @@ unsigned long x, y = 0;
 unsigned char whole, half, quarter, eighth, sixteenth, performance;
 
 enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait, M_Whole, M_W_Wait, M_Half, M_H_Wait, M_Quarter, M_Q_Wait,
-     M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait} state;
+M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait, M_Release} state;
 
 void Menu()
 {
@@ -73,6 +73,8 @@ void Menu()
                 state = M_Training;
             }
             
+            
+            
             break;
         }
         case(M_Whole):
@@ -100,6 +102,15 @@ void Menu()
             else
             {
                 state = M_Whole;
+            }
+            
+            if((~PINA & 0x20) == 0x20)
+            {
+                state = M_Release;
+            }
+            else
+            {
+                
             }
             
             break;
@@ -132,6 +143,15 @@ void Menu()
                 state = M_Half;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                state = M_Release;
+            }
+            else
+            {
+                
+            }
+            
             break;
         }
         case(M_Quarter):
@@ -161,10 +181,19 @@ void Menu()
                 state = M_Quarter;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                state = M_Release;
+            }
+            else
+            {
+                
+            }
+            
             break;
         }
         case(M_Eighth):
-        {       
+        {
             state = M_E_Wait;
             break;
         }
@@ -188,6 +217,15 @@ void Menu()
             else
             {
                 state = M_Eighth;
+            }
+            
+            if((~PINA & 0x20) == 0x20)
+            {
+                state = M_Release;
+            }
+            else
+            {
+                
             }
             
             break;
@@ -215,6 +253,15 @@ void Menu()
                 state = M_Sixteenth;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                state = M_Release;
+            }
+            else
+            {
+                
+            }
+            
             break;
         }
         case(M_Performance):
@@ -238,6 +285,28 @@ void Menu()
             else
             {
                 state = M_Performance;
+            }
+            
+            if((~PINA & 0x20) == 0x20)
+            {
+                state = M_Release;
+            }
+            else
+            {
+                
+            }
+            
+            break;
+        }
+        case(M_Release):
+        {
+            if((~PINA & 0x20) == 0x20)
+            {
+                state = M_Release;
+            }
+            else
+            {
+                LCD_DisplayString(1, "Good Stuff!!!");
             }
             
             break;
@@ -365,6 +434,10 @@ void Menu()
             break;
         }
         case(M_P_Wait):
+        {
+            break;
+        }
+        case(M_Release):
         {
             break;
         }

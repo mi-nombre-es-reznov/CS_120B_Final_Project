@@ -107,10 +107,7 @@ void Menu()
             if((~PINA & 0x20) == 0x20)
             {
                 LCD_DisplayString(1, "Button?????????");
-            }
-            else
-            {
-                LCD_DisplayString(1, "No Button???????");
+                PORTB = 0x0F;
             }
             
             break;
@@ -143,14 +140,6 @@ void Menu()
                 state = M_Half;
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_DisplayString(1, "Button?????????");
-            }
-            else
-            {
-                LCD_DisplayString(1, "No Button???????");
-            }
             
             break;
         }
@@ -181,14 +170,6 @@ void Menu()
                 state = M_Quarter;
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_DisplayString(1, "Button?????????");
-            }
-            else
-            {
-                LCD_DisplayString(1, "No Button???????");
-            }
             
             break;
         }
@@ -219,14 +200,6 @@ void Menu()
                 state = M_Eighth;
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_DisplayString(1, "Button?????????");
-            }
-            else
-            {
-                LCD_DisplayString(1, "No Button???????");
-            }
             
             break;
         }
@@ -253,14 +226,6 @@ void Menu()
                 state = M_Sixteenth;
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_DisplayString(1, "Button?????????");
-            }
-            else
-            {
-                LCD_DisplayString(1, "No Button???????");
-            }
             
             break;
         }
@@ -287,14 +252,6 @@ void Menu()
                 state = M_Performance;
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_DisplayString(1, "Button?????????");
-            }
-            else
-            {
-                LCD_DisplayString(1, "No Button???????");
-            }
             
             break;
         }

@@ -106,11 +106,11 @@ void Menu()
             
             if((~PINA & 0x20) == 0x20)
             {
-                state = M_Release;
+                LCD_DisplayString(1, "Button?????????");
             }
             else
             {
-                
+                LCD_DisplayString(1, "No Button???????");
             }
             
             break;
@@ -145,11 +145,11 @@ void Menu()
             
             if((~PINA & 0x20) == 0x20)
             {
-                state = M_Release;
+                LCD_DisplayString(1, "Button?????????");
             }
             else
             {
-                
+                LCD_DisplayString(1, "No Button???????");
             }
             
             break;
@@ -183,11 +183,11 @@ void Menu()
             
             if((~PINA & 0x20) == 0x20)
             {
-                state = M_Release;
+                LCD_DisplayString(1, "Button?????????");
             }
             else
             {
-                
+                LCD_DisplayString(1, "No Button???????");
             }
             
             break;
@@ -221,11 +221,11 @@ void Menu()
             
             if((~PINA & 0x20) == 0x20)
             {
-                state = M_Release;
+                LCD_DisplayString(1, "Button?????????");
             }
             else
             {
-                
+                LCD_DisplayString(1, "No Button???????");
             }
             
             break;
@@ -255,11 +255,11 @@ void Menu()
             
             if((~PINA & 0x20) == 0x20)
             {
-                state = M_Release;
+                LCD_DisplayString(1, "Button?????????");
             }
             else
             {
-                
+                LCD_DisplayString(1, "No Button???????");
             }
             
             break;
@@ -289,16 +289,16 @@ void Menu()
             
             if((~PINA & 0x20) == 0x20)
             {
-                state = M_Release;
+                LCD_DisplayString(1, "Button?????????");
             }
             else
             {
-                
+                LCD_DisplayString(1, "No Button???????");
             }
             
             break;
         }
-        case(M_Release):
+        /*case(M_Release):
         {
             if((~PINA & 0x20) == 0x20)
             {
@@ -310,7 +310,7 @@ void Menu()
             }
             
             break;
-        }
+        }*/
         default:
         {
             state = M_Init;
@@ -437,10 +437,10 @@ void Menu()
         {
             break;
         }
-        case(M_Release):
+        /*case(M_Release):
         {
             break;
-        }
+        }*/
         default:
         {
             LCD_DisplayString(4, "ERROR!");
@@ -458,7 +458,7 @@ int main()
     DDRD = 0xFF; PORTD = 0x00;
     
     // Set the timer and turn it on
-    TimerSet(300);
+    TimerSet(1000);
     TimerOn();
     LCD_Init();
     LCD_ClearScreen();

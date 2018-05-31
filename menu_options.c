@@ -42,16 +42,6 @@ void Menu()
         }
         case(M_Init):
         {
-            state = M_X;
-            break;
-        }
-        case(M_X):
-        {
-            state = M_Y;
-            break;
-        }
-        case(M_Y):
-        {
             state = M_Training;
             break;
         }
@@ -268,66 +258,13 @@ void Menu()
         case(M_Init):
         {
             PORTB = 0x00;
-            //whole = 0;
-            //half = 0;
-            //quarter = 0;
-            //eighth = 0;
-            //sixteenth = 0;
-            //performance = 0;
+            whole = 0;
+            half = 0;
+            quarter = 0;
+            eighth = 0;
+            sixteenth = 0;
+            performance = 0;
             LCD_Clear();
-            break;
-        }
-        case(M_X):
-        {
-            x = ADC_ReadData(3);
-            if (x >= 0 && x < 2*temp)
-            {
-                //pos = left;
-                LCD_DisplayString(1,"Left!!");
-            }
-            else if(x >= 4*temp && x < 6*temp)
-            {
-                //pos = right;
-                LCD_DisplayString(1, "Right!!");
-            }
-            else if (x >= 3*temp && x < 6*temp)
-            {
-                //pos = same;
-                LCD_DisplayString(1, "Center!!");
-            }
-            
-            if((~PINA & 0x20) == 0x20)
-            {
-                //pos = start;
-            }
-            
-            break;
-        }
-        case(M_Y):
-        {
-            y = ADC_ReadData(4);
-
-            if(y < 30)
-            {
-                LCD_DisplayString(1, "up!!!");
-                //pos = up;
-            }
-            else if(y >= 30 && y < 4*temp)
-            {
-                LCD_DisplayString(1, "Zero-y!!!");
-                //pos = same;
-            }
-            else if(y >= 4*temp && y < 6*temp)
-            {
-                LCD_DisplayString(1, "down!!");
-                //pos = down;
-            }
-
-            if((~PINA & 0x20) == 0x20)
-            {
-                //pos = start;
-            }
-            
             break;
         }
         case(M_Training):
@@ -439,6 +376,8 @@ void Menu()
     }
 }
 
+
+
 int main()
 {
     //DDRA = 0x07; PORTA = 0xF8;
@@ -446,7 +385,7 @@ int main()
     DDRD = 0xFF; PORTD = 0x00;
     
     // Set the timer and turn it on
-    TimerSet(500);
+    TimerSet(300);
     TimerOn();
     LCD_Init();
     LCD_ClearScreen();

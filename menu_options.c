@@ -23,7 +23,7 @@ unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    //
 
 // Global variables
 unsigned long x, y = 0;
-//unsigned char whole, half, quarter, eighth, sixteenth, performance, pos, left, right, up, down, same, start, curr;
+unsigned char whole, half, quarter, eighth, sixteenth, performance;
 
 enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait, M_Whole, M_W_Wait, M_Half, M_H_Wait, M_Quarter, M_Q_Wait,
      M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait} state;
@@ -42,7 +42,6 @@ void Menu()
         }
         case(M_Init):
         {
-            //curr = M_Training;
             state = M_X;
             break;
         }
@@ -81,7 +80,6 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
                 state = M_Training;
             }
             
@@ -111,7 +109,6 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
                 state = M_Whole;
             }
             
@@ -142,7 +139,6 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
                 state = M_Half;
             }
             
@@ -172,7 +168,6 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
                 state = M_Quarter;
             }
             
@@ -202,7 +197,6 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
                 state = M_Eighth;
             }
             
@@ -228,7 +222,6 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
                 state = M_Sixteenth;
             }
             
@@ -254,7 +247,6 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "else-state!!!!!!!!!!!!!!!");
                 state = M_Performance;
             }
             

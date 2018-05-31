@@ -22,7 +22,7 @@
 #define DATA_BUS PORTD		// port connected to pins 7-14 of LCD display
 #define CONTROL_BUS PORTA	// port connected to pins 4 and 6 of LCD disp.
 #define RS 0			// pin number of uC connected to pin 4 of LCD disp.
-#define E 1			// pin number of uC connected to pin 6 of LCD disp.
+#define E 2			// pin number of uC connected to pin 6 of LCD disp.
 
 /*-------------------------------------------------------------------------*/
 
@@ -93,8 +93,8 @@ void delay_ms(int miliSec) //for 8 Mhz crystal
 // To make custom character work
 void LCD_Init (void)			/* LCD Initialize function */
 {
-    LCD_Command_Dir = 0xFF;		/* Make LCD command port direction as o/p */
-    LCD_Data_Dir = 0xFF;		/* Make LCD data port direction as o/p */
+    LCD_Command_Dir = 0x07;		/* Make LCD command port direction as o/p */
+    LCD_Data_Dir = 0x0FF;		/* Make LCD data port direction as o/p */
     _delay_ms(20);			/* LCD Power ON delay always >15ms */
     
     LCD_Command (0x38);		/* Initialization of 16X2 LCD in 8bit mode */

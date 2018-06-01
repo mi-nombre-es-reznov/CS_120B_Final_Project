@@ -410,12 +410,12 @@ void Menu()
 
 int main()
 {
-    //DDRA = 0x07; PORTA = 0xF8;
+    DDRA = 0x07; PORTA = 0xF8;
     DDRB = 0xFF; PORTB = 0x00;
     DDRD = 0xFF; PORTD = 0x00;
     
     // Set the timer and turn it on
-    TimerSet(1000);
+    TimerSet(300);
     TimerOn();
     LCD_Init();
     LCD_ClearScreen();
@@ -434,7 +434,7 @@ int main()
     LCD_Command(0x80);		/*cursor at home position */
     LCD_Command(0xc0);
 
-    unsigned short i; // Scheduler for-loop iterator
+    //unsigned short i; // Scheduler for-loop iterator
 
     while(1)
     {

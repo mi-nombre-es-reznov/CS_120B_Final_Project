@@ -22,11 +22,11 @@ unsigned char Character7[8] = { 0x11,0x11,0x11,0x11,0x1f,0x1f,0x1f,0x1f };    //
 unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    // Headphones
 
 // Global variables
-unsigned long x, y = 0;
+unsigned long x, y = 0, count = 0;
 unsigned char whole, half, quarter, eighth, sixteenth, performance;
 
 enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait, M_Whole, M_W_Wait, M_Half, M_H_Wait, M_Quarter, M_Q_Wait,
-M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait, M_Release} state;
+M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait, M_Release, M_R_Wait} state;
 
 void Menu()
 {
@@ -56,7 +56,7 @@ void Menu()
             x = ADC_ReadData(3);
             y = ADC_ReadData(4);
             
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 3*temp))
             {
                 
             }
@@ -64,16 +64,14 @@ void Menu()
             {
                 state = M_Whole;
             }
-            else if(x >= 4*temp && x < 6*temp)
+            else if(x >= 3*temp && x < 9*temp)
             {
                 state = M_Performance;
             }
             else
             {
-                state = M_Training;
-            }
-            
-            
+                state = M_T_Wait;
+            }                       
             
             break;
         }
@@ -101,13 +99,16 @@ void Menu()
             }
             else
             {
-                state = M_Whole;
+                state = M_W_Wait;
             }
             
             if((~PINA & 0x20) == 0x20)
             {
-                LCD_DisplayString(1, "Button?????????");
-                PORTB = 0x0F;
+                LCD_Clear();
+                LCD_DisplayString(1, "   Whole Note       Pressed!");
+                state = M_Release;
+                whole = 1;
+                PORTB = 0x01;
             }
             
             break;
@@ -137,9 +138,17 @@ void Menu()
             }
             else
             {
-                state = M_Half;
+                state = M_H_Wait;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                LCD_Clear();
+                LCD_DisplayString(1, "   Half  Note       Pressed!");
+                state = M_Release;
+                half = 1;
+                PORTB = 0x02;
+            }
             
             break;
         }
@@ -167,9 +176,17 @@ void Menu()
             }
             else
             {
-                state = M_Quarter;
+                state = M_Q_Wait;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                LCD_Clear();
+                LCD_DisplayString(1, "  Quarter Note      Pressed!");
+                state = M_Release;
+                quarter = 1;
+                PORTB = 0x04;
+            }
             
             break;
         }
@@ -197,9 +214,17 @@ void Menu()
             }
             else
             {
-                state = M_Eighth;
+                state = M_E_Wait;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                LCD_Clear();
+                LCD_DisplayString(1, "  Eighth  Note      Pressed!");
+                state = M_Release;
+                eighth = 1;
+                PORTB = 0x08;
+            }
             
             break;
         }
@@ -223,9 +248,17 @@ void Menu()
             }
             else
             {
-                state = M_Sixteenth;
+                state = M_S_Wait;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                LCD_Clear();
+                LCD_DisplayString(1, " Sixteenth Note     Pressed!");
+                state = M_Release;
+                sixteenth = 1;
+                PORTB = 0x10;
+            }
             
             break;
         }
@@ -249,13 +282,20 @@ void Menu()
             }
             else
             {
-                state = M_Performance;
+                state = M_P_Wait;
             }
             
+            if((~PINA & 0x20) == 0x20)
+            {
+                LCD_DisplayString(1, "Performance Mode    Pressed!");
+                state = M_Release;
+                performance = 1;
+                PORTB = 0xFF;
+            }
             
             break;
         }
-        /*case(M_Release):
+        case(M_Release):
         {
             if((~PINA & 0x20) == 0x20)
             {
@@ -263,11 +303,26 @@ void Menu()
             }
             else
             {
-                LCD_DisplayString(1, "Good Stuff!!!");
+                LCD_DisplayString(1, "  Good Shit!!!    Good Luck!!!");
+                state = M_R_Wait;
             }
             
             break;
-        }*/
+        }
+        case(M_R_Wait):
+        {
+            if(count <= 10)
+            {
+                
+            }
+            else
+            {
+                state = M_Init;
+            }
+            
+            count++;
+            break;
+        }
         default:
         {
             state = M_Init;
@@ -290,6 +345,7 @@ void Menu()
             eighth = 0;
             sixteenth = 0;
             performance = 0;
+            count = 0;
             LCD_Clear();
             break;
         }
@@ -394,10 +450,14 @@ void Menu()
         {
             break;
         }
-        /*case(M_Release):
+        case(M_Release):
         {
             break;
-        }*/
+        }
+        case(M_R_Wait):
+        {
+            break;
+        }
         default:
         {
             LCD_DisplayString(4, "ERROR!");

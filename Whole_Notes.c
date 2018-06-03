@@ -1,9 +1,4 @@
-/*
- * Quarter_Notes.c.c
- *
- * Created: 6/2/2018 5:51:54 PM
- * Author : xXSexyBeastXx
- */ 
+// Attempt at whole notes
 
 #include <avr/io.h>
 #include "timer.h"

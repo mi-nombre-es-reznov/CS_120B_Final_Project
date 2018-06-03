@@ -116,13 +116,29 @@ void Cyc()
                             LCD_ClearScreen();
                             LCD_DisplayString(5, "WINNER!!");
                         }
-                        
                     }
                     else if((~PINA & 0x20) != 0x20 && transmit_data(Q[count]) == 0x0001)
                     {
                         LCD_Cursor(23);
-                        miss = (miss + 1);
-                        LCD_WriteData(miss + '0');
+                        if(miss <= 8)
+                        {
+                            miss++;
+                            LCD_WriteData(miss + '0');
+                        }
+                        else if(miss >= 9 && miss <= 18)
+                        {
+                            LCD_Cursor(23);
+                            LCD_String("1");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_DisplayString(5, "LOSER!!!");
+                        }
                     }
                     
                     count++;

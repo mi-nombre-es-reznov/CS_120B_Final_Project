@@ -117,7 +117,10 @@ void Whole()
                         else if(score >= 19)
                         {
                             LCD_ClearScreen();
-                            LCD_DisplayString(5, "WINNER!!");
+                            LCD_Cursor(5);
+                            LCD_String("WINNER!!");
+                            LCD_Cursor(18);
+                            LCD_String("TRY 1/2 NOTES?");
                             state = W_Wait_Message;
                         }
                     }
@@ -141,7 +144,10 @@ void Whole()
                         else if(miss >= 19)
                         {
                             LCD_ClearScreen();
-                            LCD_DisplayString(5, "LOSER!!!");
+                            LCD_Cursor(5);
+                            LCD_String("LOSER!!!");
+                            LCD_Cursor(20);
+                            LCD_String("TRY AGAIN?");
                             state = W_Wait_Message;
                         }
                     }
@@ -159,7 +165,7 @@ void Whole()
         }
         case(W_Wait_Message):
         {
-            if(wait <= 80)
+            if(wait <= 120)
             {
                 
             }

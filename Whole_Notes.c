@@ -32,7 +32,7 @@ short transmit_data(unsigned short data) {
 
 // Global Variables
 unsigned char count, loop;
-unsigned char score;
+unsigned char score, miss;
 //short Q[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
 //    0x4000, 0x8000};
 short Q[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
@@ -77,6 +77,11 @@ void Cyc()
             count = 0;
             loop = 0;
             score = 0;
+            miss = 0;
+            LCD_Cursor(1);
+            LCD_String("Hit:");
+            LCD_Cursor(17);
+            LCD_String("Miss:");
             break;
         }
         case(cycle):
@@ -88,15 +93,15 @@ void Cyc()
                     transmit_data(Q[count]);
                     if((~PINA & 0x20) == 0x20 && transmit_data(Q[count]) == 0x0001)
                     {
-                        LCD_Cursor(1);
-                        score++;
+                        LCD_Cursor(6);
+                        score = (score + 1);
                         LCD_WriteData(score + '0');
                     }
                     else if((~PINA & 0x20) != 0x20 && transmit_data(Q[count]) == 0x0001)
                     {
-                        LCD_Cursor(1);
-                        score--;
-                        LCD_WriteData(score + '0');
+                        LCD_Cursor(23);
+                        miss = (miss + 1);
+                        LCD_WriteData(miss + '0');
                     }
                     
                     count++;

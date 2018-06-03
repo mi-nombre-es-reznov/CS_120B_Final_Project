@@ -227,8 +227,11 @@ int main()
 {
 // Set Data Direction Registers
 // Buttons PORTA[0-7], set AVR PORTA to pull down logic
-DDRA = 0x00; PORTA = 0xFF;
-DDRB = 0xFF; PORTB = 0x00;
+DDRA = 0x07;    PORTA = 0xF8;
+DDRD = 0xFF;    PORTD = 0x00;
+    
+LCD_Init();
+LCD_ClearScreen();
 // . . . etc
 
 // Period for the tasks

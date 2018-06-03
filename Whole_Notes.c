@@ -29,7 +29,7 @@ short transmit_data(unsigned short data) {
 }
 
 // Global Variables
-unsigned char count, loop;
+unsigned char count, loop, wait;
 unsigned char score, pos_place, neg_place;
 signed char miss;
 //short Q[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
@@ -37,41 +37,45 @@ signed char miss;
 short Q[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
 0x0000, 0x0000};
 
-enum s{start, init, cycle} state;
+enum Q_States{Q_SMStart, Q_Init, Q_Cycle, Q_Wait_Message} state;
 
 void Cyc()
 {
     switch(state)
     {
-        case(start):
+        case(Q_SMStart):
         {
-            state = init;
+            state = Q_Init;
             break;
         }
-        case(init):
+        case(Q_Init):
         {
-            state = cycle;
+            state = Q_Cycle;
             break;
         }
-        case(cycle):
+        case(Q_Cycle):
         {
-            state = cycle;
+            state = Q_Cycle;
+            break;
+        }
+        case(Q_Wait_Message):
+        {
             break;
         }
         default:
         {
-            state = init;
+            state = Q_Init;
             break;
         }
     }
     
     switch(state)
     {
-        case(start):
+        case(Q_SMStart):
         {
             break;
         }
-        case(init):
+        case(Q_Init):
         {
             count = 0;
             loop = 0;
@@ -79,13 +83,14 @@ void Cyc()
             miss = -1;
             pos_place = 0;
             neg_place = 0;
+            wait = 0;
             LCD_Cursor(1);
             LCD_String("Hit:");
             LCD_Cursor(17);
             LCD_String("Miss:");
             break;
         }
-        case(cycle):
+        case(Q_Cycle):
         {
             if((loop % 4) == 0)
             {
@@ -113,6 +118,7 @@ void Cyc()
                         {
                             LCD_ClearScreen();
                             LCD_DisplayString(5, "WINNER!!");
+                            state = Q_Wait_Message;
                         }
                     }
                     else if((~PINA & 0x20) != 0x20 && transmit_data(Q[count]) == 0x0001)
@@ -136,6 +142,7 @@ void Cyc()
                         {
                             LCD_ClearScreen();
                             LCD_DisplayString(5, "LOSER!!!");
+                            state = Q_Wait_Message;
                         }
                     }
                     
@@ -148,6 +155,20 @@ void Cyc()
             }
 
             loop++;
+            break;
+        }
+        case(Q_Wait_Message):
+        {
+            if(wait <= 80)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+            }
+            
+            wait++;
             break;
         }
         default:

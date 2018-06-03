@@ -1,9 +1,17 @@
 // Attempt at whole notes
 
+#define F_CPU 8000000UL
 #include <avr/io.h>
+#include <util/delay.h>
+#include <stdlib.h>
+//#include "adc.h"
+//#include "adc.c"
 #include "timer.h"
+#include "io.h"
+#include "io.c"
 
-void transmit_data(unsigned short data) {
+
+short transmit_data(unsigned short data) {
     int i;
     for (i = 0; i < 16 ; ++i) {
         // Sets SRCLR to 1 allowing data to be set
@@ -18,17 +26,20 @@ void transmit_data(unsigned short data) {
     PORTC |= 0x04;
     // clears all lines in preparation of a new transmission
     PORTC = 0x00;
+    
+    return data;
 }
 
 // Global Variables
-unsigned short count;
+unsigned char count, loop;
+unsigned char score;
 //short Q[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
 //    0x4000, 0x8000};
-short Q[] = {0x0001, 0x0000, 0x0004, 0x0000, 0x0010, 0x0000, 0x0040, 0x0000, 0x0100, 0x0000, 0x0400, 0x0000, 0x1000, 0x0000,
-    0x4000, 0x0000};
+short Q[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
+0x0000, 0x0000};
 
 enum s{start, init, cycle} state;
-    
+
 void Cyc()
 {
     switch(state)
@@ -64,20 +75,39 @@ void Cyc()
         case(init):
         {
             count = 0;
+            loop = 0;
+            score = 0;
             break;
         }
         case(cycle):
         {
-            if(count <= 15)
-            {             
-                transmit_data(Q[count]);
-                count++;
-            }
-            else
+            if((loop % 4) == 0)
             {
-                count = 0;
+                if(count <= 15)
+                {
+                    transmit_data(Q[count]);
+                    if((~PINA & 0x20) == 0x20 && transmit_data(Q[count]) == 0x0001)
+                    {
+                        LCD_Cursor(1);
+                        score++;
+                        LCD_WriteData(score + '0');
+                    }
+                    else if((~PINA & 0x20) != 0x20 && transmit_data(Q[count]) == 0x0001)
+                    {
+                        LCD_Cursor(1);
+                        score--;
+                        LCD_WriteData(score + '0');
+                    }
+                    
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
             }
-            
+
+            loop++;
             break;
         }
         default:
@@ -91,11 +121,16 @@ void Cyc()
 int main(void)
 {
     DDRC = 0xFF; PORTC = 0x00;
+    DDRA = 0x07; PORTA = 0xF8;
+    DDRD = 0xFF; PORTD = 0x00;
     
-    TimerSet(200);
+    LCD_Init();
+    LCD_ClearScreen();
+    
+    TimerSet(25);
     TimerOn();
     /* Replace with your application code */
-    while (1) 
+    while (1)
     {
         Cyc();
         

@@ -32,7 +32,8 @@ short transmit_data(unsigned short data) {
 
 // Global Variables
 unsigned char count, loop;
-unsigned char score, miss;
+unsigned char score, pos_place, neg_place;
+signed char miss;
 //short Q[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
 //    0x4000, 0x8000};
 short Q[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
@@ -77,7 +78,9 @@ void Cyc()
             count = 0;
             loop = 0;
             score = 0;
-            miss = 0;
+            miss = -1;
+            pos_place = 0;
+            neg_place = 0;
             LCD_Cursor(1);
             LCD_String("Hit:");
             LCD_Cursor(17);
@@ -94,8 +97,26 @@ void Cyc()
                     if((~PINA & 0x20) == 0x20 && transmit_data(Q[count]) == 0x0001)
                     {
                         LCD_Cursor(6);
-                        score = (score + 1);
-                        LCD_WriteData(score + '0');
+                        if(score <= 8)
+                        {
+                            score++;
+                            LCD_WriteData(score + '0');
+                        }
+                        else if(score >= 9 && score <= 18)
+                        {
+                            LCD_Cursor(6);
+                            LCD_String("1");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_DisplayString(5, "WINNER!!");
+                        }
+                        
                     }
                     else if((~PINA & 0x20) != 0x20 && transmit_data(Q[count]) == 0x0001)
                     {

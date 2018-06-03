@@ -41,7 +41,7 @@ short W[] = {0x0001, 0x0000, 0x000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x01
 
 enum H_States{H_SMStart, H_Init, H_Cycle, H_Wait_Message} state;
 
-void Whole()
+void Half()
 {
     switch(state)
     {
@@ -205,7 +205,7 @@ int main(void)
     /* Replace with your application code */
     while (1)
     {
-        Whole();
+        Half();
         
         while(!TimerFlag);
         TimerFlag = 0;

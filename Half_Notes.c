@@ -133,7 +133,7 @@ void Whole()
                         {
                             miss++;
                         }
-                        if(miss <= 8)
+                        else if(miss <= 8)
                         {
                             miss++;
                             LCD_WriteData(miss + '0');

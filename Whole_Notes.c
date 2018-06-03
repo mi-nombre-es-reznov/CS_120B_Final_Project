@@ -32,50 +32,50 @@ short transmit_data(unsigned short data) {
 unsigned char count, loop, wait;
 unsigned char score, pos_place, neg_place;
 signed char miss;
-//short Q[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
+//short temp[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
 //    0x4000, 0x8000};
-short Q[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
+short W[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
 0x0000, 0x0000};
 
-enum Q_States{Q_SMStart, Q_Init, Q_Cycle, Q_Wait_Message} state;
+enum W_States{W_SMStart, W_Init, W_Cycle, W_Wait_Message} state;
 
-void Cyc()
+void Whole()
 {
     switch(state)
     {
-        case(Q_SMStart):
+        case(W_SMStart):
         {
-            state = Q_Init;
+            state = W_Init;
             break;
         }
-        case(Q_Init):
+        case(W_Init):
         {
-            state = Q_Cycle;
+            state = W_Cycle;
             break;
         }
-        case(Q_Cycle):
+        case(W_Cycle):
         {
-            state = Q_Cycle;
+            state = W_Cycle;
             break;
         }
-        case(Q_Wait_Message):
+        case(W_Wait_Message):
         {
             break;
         }
         default:
         {
-            state = Q_Init;
+            state = W_Init;
             break;
         }
     }
     
     switch(state)
     {
-        case(Q_SMStart):
+        case(W_SMStart):
         {
             break;
         }
-        case(Q_Init):
+        case(W_Init):
         {
             count = 0;
             loop = 0;
@@ -90,14 +90,14 @@ void Cyc()
             LCD_String("Miss:");
             break;
         }
-        case(Q_Cycle):
+        case(W_Cycle):
         {
             if((loop % 4) == 0)
             {
                 if(count <= 15)
                 {
-                    transmit_data(Q[count]);
-                    if((~PINA & 0x20) == 0x20 && transmit_data(Q[count]) == 0x0001)
+                    transmit_data(W[count]);
+                    if((~PINA & 0x20) == 0x20 && transmit_data(W[count]) == 0x0001)
                     {
                         LCD_Cursor(6);
                         if(score <= 8)
@@ -118,10 +118,10 @@ void Cyc()
                         {
                             LCD_ClearScreen();
                             LCD_DisplayString(5, "WINNER!!");
-                            state = Q_Wait_Message;
+                            state = W_Wait_Message;
                         }
                     }
-                    else if((~PINA & 0x20) != 0x20 && transmit_data(Q[count]) == 0x0001)
+                    else if((~PINA & 0x20) != 0x20 && transmit_data(W[count]) == 0x0001)
                     {
                         LCD_Cursor(23);
                         if(miss <= 8)
@@ -142,7 +142,7 @@ void Cyc()
                         {
                             LCD_ClearScreen();
                             LCD_DisplayString(5, "LOSER!!!");
-                            state = Q_Wait_Message;
+                            state = W_Wait_Message;
                         }
                     }
                     
@@ -157,7 +157,7 @@ void Cyc()
             loop++;
             break;
         }
-        case(Q_Wait_Message):
+        case(W_Wait_Message):
         {
             if(wait <= 80)
             {
@@ -193,7 +193,7 @@ int main(void)
     /* Replace with your application code */
     while (1)
     {
-        Cyc();
+        Whole();
         
         while(!TimerFlag);
         TimerFlag = 0;

@@ -4,8 +4,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
-//#include "adc.h"
-//#include "adc.c"
 #include "timer.h"
 #include "io.h"
 #include "io.c"

@@ -99,7 +99,7 @@ void Whole()
                 if(count <= 15)
                 {
                     transmit_data(W[count]);
-                    if((~PINA & 0x20) == 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
+                    if((~PINA & 0x20) == 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
                     {
                         LCD_Cursor(6);
                         if(score <= 8)

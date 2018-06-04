@@ -225,88 +225,88 @@ void Intro()
 // Implement scheduler code from PES.
 int main()
 {
-// Set Data Direction Registers
-// Buttons PORTA[0-7], set AVR PORTA to pull down logic
-DDRA = 0x07;    PORTA = 0xF8;
-DDRD = 0xFF;    PORTD = 0x00;
+    // Set Data Direction Registers
+    // Buttons PORTA[0-7], set AVR PORTA to pull down logic
+    DDRA = 0x07;    PORTA = 0xF8;
+    DDRD = 0xFF;    PORTD = 0x00;
     
-LCD_Init();
-LCD_ClearScreen();
-// . . . etc
+    LCD_Init();
+    LCD_ClearScreen();
+    // . . . etc
 
-// Period for the tasks
-unsigned long int SMTick1_calc = 50;
-//unsigned long int SMTick2_calc = 500;
-//unsigned long int SMTick3_calc = 1000;
-//unsigned long int SMTick4_calc = 10;
+    // Period for the tasks
+    unsigned long int Intro_calc = 300;
+    //unsigned long int SMTick2_calc = 500;
+    //unsigned long int SMTick3_calc = 1000;
+    //unsigned long int SMTick4_calc = 10;
 
-//Calculating GCD
-unsigned long int tmpGCD = 1;
-//tmpGCD = findGCD(SMTick1_calc, SMTick2_calc);
-//tmpGCD = findGCD(tmpGCD, SMTick3_calc);
-//tmpGCD = findGCD(tmpGCD, SMTick4_calc);
+    //Calculating GCD
+    unsigned long int tmpGCD = 1;
+    //tmpGCD = findGCD(SMTick1_calc, SMTick2_calc);
+    //tmpGCD = findGCD(tmpGCD, SMTick3_calc);
+    //tmpGCD = findGCD(tmpGCD, SMTick4_calc);
 
-//Greatest common divisor for all tasks or smallest time unit for tasks.
-unsigned long int GCD = tmpGCD;
+    //Greatest common divisor for all tasks or smallest time unit for tasks.
+    unsigned long int GCD = tmpGCD;
 
-//Recalculate GCD periods for scheduler
-unsigned long int SMTick1_period = SMTick1_calc/GCD;
-//unsigned long int SMTick2_period = SMTick2_calc/GCD;
-//unsigned long int SMTick3_period = SMTick3_calc/GCD;
-//unsigned long int SMTick4_period = SMTick4_calc/GCD;
+    //Recalculate GCD periods for scheduler
+    unsigned long int intro_period = Intro_calc/GCD;
+    //unsigned long int SMTick2_period = SMTick2_calc/GCD;
+    //unsigned long int SMTick3_period = SMTick3_calc/GCD;
+    //unsigned long int SMTick4_period = SMTick4_calc/GCD;
 
-//Declare an array of tasks 
-static task task1;//, task2, task3, task4;
-task *tasks[] = { &task1};//, &task2};//, &task3, &task4 };
-const unsigned short numTasks = sizeof(tasks)/sizeof(task*);
+    //Declare an array of tasks
+    static task intro;//, task2, task3, task4;
+    task *tasks[] = { &intro};//, &task2};//, &task3, &task4 };
+    const unsigned short numTasks = sizeof(tasks)/sizeof(task*);
 
-// Task 1
-task1.state = -1;//Task initial state.
-task1.period = SMTick1_period;//Task Period.
-task1.elapsedTime = SMTick1_period;//Task current elapsed time.
-task1.TickFct = &SMTick1;//Function pointer for the tick.
+    // Task 1
+    intro.state = Intro_SMStart;//Task initial state.
+    intro.period = intro_period;//Task Period.
+    intro.elapsedTime = intro_period;//Task current elapsed time.
+    intro.TickFct = &Intro;//Function pointer for the tick.
 
-/*
-// Task 2
-task2.state = -1;//Task initial state.
-task2.period = SMTick2_period;//Task Period.
-task2.elapsedTime = SMTick2_period;//Task current elapsed time.
-task2.TickFct = &SMTick2;//Function pointer for the tick.
+    /*
+    // Task 2
+    task2.state = -1;//Task initial state.
+    task2.period = SMTick2_period;//Task Period.
+    task2.elapsedTime = SMTick2_period;//Task current elapsed time.
+    task2.TickFct = &SMTick2;//Function pointer for the tick.
 
-// Task 3
-task3.state = -1;//Task initial state.
-task3.period = SMTick3_period;//Task Period.
-task3.elapsedTime = SMTick3_period; // Task current elasped time.
-task3.TickFct = &SMTick3; // Function pointer for the tick.
+    // Task 3
+    task3.state = -1;//Task initial state.
+    task3.period = SMTick3_period;//Task Period.
+    task3.elapsedTime = SMTick3_period; // Task current elasped time.
+    task3.TickFct = &SMTick3; // Function pointer for the tick.
 
-// Task 4
-task4.state = -1;//Task initial state.
-task4.period = SMTick4_period;//Task Period.
-task4.elapsedTime = SMTick4_period; // Task current elasped time.
-task4.TickFct = &SMTick4; // Function pointer for the tick.
-*/
+    // Task 4
+    task4.state = -1;//Task initial state.
+    task4.period = SMTick4_period;//Task Period.
+    task4.elapsedTime = SMTick4_period; // Task current elasped time.
+    task4.TickFct = &SMTick4; // Function pointer for the tick.
+    */
 
-// Set the timer and turn it on
-TimerSet(GCD);
-TimerOn();
+    // Set the timer and turn it on
+    TimerSet(GCD);
+    TimerOn();
 
-unsigned short i; // Scheduler for-loop iterator
-while(1) {
-	// Scheduler code
-	for ( i = 0; i < numTasks; i++ ) {
-		// Task is ready to tick
-		if ( tasks[i]->elapsedTime == tasks[i]->period ) {
-			// Setting next state for task
-			tasks[i]->state = tasks[i]->TickFct(tasks[i]->state);
-			// Reset the elapsed time for next tick.
-			tasks[i]->elapsedTime = 0;
-		}
-		tasks[i]->elapsedTime += 1;
-	}
-	while(!TimerFlag);
-	TimerFlag = 0;
-}
+    unsigned short i; // Scheduler for-loop iterator
+    while(1) {
+        // Scheduler code
+        for ( i = 0; i < numTasks; i++ ) {
+            // Task is ready to tick
+            if ( tasks[i]->elapsedTime == tasks[i]->period ) {
+                // Setting next state for task
+                tasks[i]->state = tasks[i]->TickFct(tasks[i]->state);
+                // Reset the elapsed time for next tick.
+                tasks[i]->elapsedTime = 0;
+            }
+            tasks[i]->elapsedTime += 1;
+        }
+        while(!TimerFlag);
+        TimerFlag = 0;
+    }
 
-// Error: Program should not exit!
-return 0;
+    // Error: Program should not exit!
+    return 0;
 }

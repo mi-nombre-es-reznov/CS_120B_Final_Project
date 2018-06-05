@@ -30,7 +30,8 @@ unsigned char count, count2;
 
 //--------User defined FSMs---------------------------------------------------
 //Enumeration of states.
-enum Final_States{Fin_SMStart, Fin_Init, Fin_Intro, F_Start, F_Menu};
+enum Final_States{Fin_SMStart, Fin_Init, Fin_Intro, F_Start, F_Menu, F_which_game, F_Whole, F_Half, F_Quarter, 
+                F_Eighth, F_Sixteenth, F_Performance, F_Performance_Wait};
     
 int Final(unsigned int state)
 {
@@ -61,6 +62,78 @@ int Final(unsigned int state)
             Menu();
             break;
         }
+        case(F_which_game):
+        {
+            if(whole == 1)
+            {
+                state = F_Whole;
+            }
+            else if(half == 1)
+            {
+                state = F_Half;
+            }
+            else if(quarter == 1)
+            {
+                state = F_Quarter;
+            }
+            else if(eighth == 1)
+            {
+                state = F_Eighth;
+            }
+            else if(sixteenth == 1)
+            {
+                state = F_Sixteenth;
+            }
+            else if(performance == 1)
+            {
+                state = F_Performance;
+            }
+            else
+            {
+                state = F_Menu;
+            }
+            
+            break;
+        }
+        case(F_Whole):
+        {
+            LCD_DisplayString(1, "In whole state");
+            break;
+        }
+        case(F_Half):
+        {
+            LCD_DisplayString(1, "In half state");
+            break;
+        }
+        case(F_Quarter):
+        {
+            LCD_DisplayString(1, "In quarter state");
+            break;
+        }
+        case(F_Eighth):
+        {
+            LCD_DisplayString(1, "In eighth state");
+            break;
+        }
+        case(F_Sixteenth):
+        {
+            LCD_DisplayString(1, "In sixteenth state");
+            break;
+        }
+        case(F_Performance):
+        {
+            state = F_Performance_Wait;
+            break;
+        }
+        case(F_Performance_Wait):
+        {
+            break;
+        }
+        default:
+        {
+            state = Fin_Init;
+            break;
+        }
     }
     
     switch(state)
@@ -71,6 +144,7 @@ int Final(unsigned int state)
         }
         case(Fin_Init):
         {
+            count = 0;
             break;
         }
         case(Fin_Intro):
@@ -92,14 +166,89 @@ int Final(unsigned int state)
             {
                 state = F_Menu;
             }
+            else
+            {
+                state = F_Start;
+            }
             
             break;
         }
         case(F_Menu):
         {
-            state = F_Menu;
+            if(Menu_Flag == 1)
+            {
+                state = F_which_game;
+            }
+            else
+            {
+               state = F_Menu;
+            }
+            
             break;
-        }            
+        }       
+        case(F_which_game):
+        {
+            break;
+        }     
+        case(F_Whole):
+        {
+            break;
+        }
+        case(F_Half):
+        {
+            break;
+        }
+        case(F_Quarter):
+        {
+            break;
+        }
+        case(F_Eighth):
+        {
+            break;
+        }
+        case(F_Sixteenth):
+        {
+            break;
+        }
+        case(F_Performance):
+        {
+            LCD_ClearScreen();
+            LCD_Cursor(3);
+            LCD_Char(7);
+            LCD_Cursor(5);
+            LCD_String("Not  Yet");
+            LCD_Cursor(14);
+            LCD_Char(7);
+            LCD_Cursor(18);
+            LCD_Char(7);
+            LCD_Cursor(20);
+            LCD_String("Available!");
+            LCD_Cursor(31);
+            LCD_Char(7);                    
+            break;
+        }
+        case(F_Performance_Wait):
+        {
+            if(count <= 40)
+            {
+                state = F_Performance_Wait;
+            }
+            else
+            {
+                state = F_Menu;
+                Menu_Flag = 0;
+                performance = 0;
+                LCD_ClearScreen();
+            }
+            
+            count++;
+            break;
+        }
+        default:
+        {
+            LCD_DisplayString(1, "ERROR!!!");
+            break;
+        }
     }
     
     return state;

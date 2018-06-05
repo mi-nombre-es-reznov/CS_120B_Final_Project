@@ -3,5 +3,6 @@
 
 void Intro();
 void Start_Screen();
+void Menu();
 
 #endif //INTRO_H

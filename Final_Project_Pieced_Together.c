@@ -1,6 +1,5 @@
 // Final_Project_Pieced_Together.c
 
-
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
@@ -10,216 +9,101 @@
 #include "timer.h"
 #include "io.h"
 #include "io.c"
+#include "working_parts.h"
+#include "working_parts.c"
 #include "scheduler.h"
 
-//--------Shared Variables----------------------------------------------------
+// Created characters for LCD screen
+unsigned char Character1[8] = { 0x1f,0x11,0x15,0x15,0x15,0x15,0x11,0x1f };    // Unpressed button
+unsigned char Character2[8] = { 0x0,0xe,0xe,0xe,0xe,0xe,0xe,0x0 };            // Pressed button
+unsigned char Character3[8] = { 0x0,0x4,0x6,0x1f,0x6,0x4,0x0,0x0 };           // Right Arrow
+unsigned char Character4[8] = { 0x0,0x4,0xc,0x1f,0xc,0x4,0x0,0x0 };           // Left Arrow
+unsigned char Character5[8] = { 0x4,0xe,0xe,0x1f,0x1f,0x4,0x4,0x4 };          // Up Arrow
+unsigned char Character6[8] = { 0x4,0x4,0x4,0x1f,0x1f,0xe,0xe,0x4 };          // Down Arrow
+unsigned char Character7[8] = { 0x11,0x11,0x11,0x11,0x1f,0x1f,0x1f,0x1f };    // Hand
+unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    // Headphones
 
-
+//--------Global Variables----------------------------------------------------
+unsigned char count, count2;
 //--------End Shared Variables------------------------------------------------
+
 
 //--------User defined FSMs---------------------------------------------------
 //Enumeration of states.
-unsigned char count = 0;
-enum Intro_LCD{Intro_SMStart, Intro_Init, Intro_Stage1, Intro_Stage2, Intro_Stage3,
-    Intro_Stage4, Intro_Stage5, Intro_Stage6, Intro_Stage7, Intro_Stage8, Intro_Stage9,
-    Intro_StageA, Intro_StageB, Intro_Wait, Intro_Beat_Trainer, Intro_Wait2} Intro_state;
-
-void Intro()
+enum Final_States{Fin_SMStart, Fin_Init, Fin_Intro, F_Start, F_Menu};
+    
+int Final(unsigned int state)
 {
-    switch(Intro_state)
+    switch(state)
     {
-        case(Intro_SMStart):
+        case(Fin_SMStart):
         {
-            Intro_state = Intro_Init;
+            state = Fin_Init;
             break;
         }
-        case(Intro_Init):
+        case(Fin_Init):
         {
-            Intro_state = Intro_Stage1;
+            state = Fin_Intro;
+            break;
+        }        
+        case(Fin_Intro):
+        {
+            Intro();
+            break;       
+        }
+        case(F_Start):
+        {
+            Start_Screen();
             break;
         }
-        case(Intro_Stage1):
+        case(F_Menu):
         {
-            Intro_state = Intro_Stage2;
-            break;
-        }
-        case(Intro_Stage2):
-        {
-            Intro_state = Intro_Stage3;
-            break;
-        }
-        case(Intro_Stage3):
-        {
-            Intro_state = Intro_Stage4;
-            break;
-        }
-        case(Intro_Stage4):
-        {
-            Intro_state = Intro_Stage5;
-            break;
-        }
-        case(Intro_Stage5):
-        {
-            Intro_state = Intro_Stage6;
-            break;
-        }
-        case(Intro_Stage6):
-        {
-            Intro_state = Intro_Stage7;
-            break;
-        }
-        case(Intro_Stage7):
-        {
-            Intro_state = Intro_Stage8;
-            break;
-        }
-        case(Intro_Stage8):
-        {
-            Intro_state = Intro_Stage9;
-            break;
-        }
-        case(Intro_Stage9):
-        {
-            Intro_state = Intro_Wait;
-            break;
-        }
-        case(Intro_Wait):
-        {
-            break;
-        }
-        case(Intro_Beat_Trainer):
-        {
-            break;
-        }
-        case(Intro_Wait2):
-        {
-            break;
-        }
-        default:
-        {
-            Intro_state = Intro_Init;
+            Menu();
             break;
         }
     }
     
-    switch(Intro_state)
+    switch(state)
     {
-        case(Intro_SMStart):
+        case(Fin_SMStart):
         {
             break;
         }
-        case(Intro_Init):
+        case(Fin_Init):
         {
-            LCD_ClearScreen();
             break;
         }
-        case(Intro_Stage1):
+        case(Fin_Intro):
         {
-            LCD_DisplayString(1, "e                              t");
-            break;
-        }
-        case(Intro_Stage2):
-        {
-            LCD_DisplayString(1, "me                            to");
-            break;
-        }
-        case(Intro_Stage3):
-        {
-            LCD_DisplayString(1, "ome                          to ");
-            break;
-        }
-        case(Intro_Stage4):
-        {
-            LCD_DisplayString(1, "come                        to t");
-            break;
-        }
-        case(Intro_Stage5):
-        {
-            LCD_DisplayString(1, "lcome                      to th");
-            break;
-        }
-        case(Intro_Stage6):
-        {
-            LCD_DisplayString(1, "elcome                    to the");
-            break;
-        }
-        case(Intro_Stage7):
-        {
-            LCD_DisplayString(1, "Welcome                  to the");
-            break;
-        }
-        case(Intro_Stage8):
-        {
-            LCD_DisplayString(1, " Welcome                to the");
-            break;
-        }
-        case(Intro_Stage9):
-        {
-            LCD_DisplayString(1, "  Welcome              to the");
-            break;
-        }
-        case(Intro_Wait):
-        {
-            if(count < 1)
+            if(Intro_Flag == 1)
             {
-                
+                state = F_Start;
             }
             else
             {
-                LCD_ClearScreen();
-                Intro_state = Intro_Beat_Trainer;
-                count = 0;
-            }
-            
-            count++;
-            break;
-        }
-        case(Intro_Beat_Trainer):
-        {
-            count++;
-            if(count <= 9)
-            {
-                if(count % 2 == 0)
-                {
-                    LCD_DisplayString(7, "Beat          Trainer!");
-                }
-                else
-                {
-                    LCD_ClearScreen();
-                }
-            }
-            else
-            {
-                LCD_DisplayString(7, "Beat          Trainer!");
-                Intro_state = Intro_Wait2;
-                count = 0;
+                state = Fin_Intro;
             }
             
             break;
         }
-        case(Intro_Wait2):
+        case(F_Start):
         {
-            if(count <= 2)
+            if(Start_Screen_Flag == 1)
             {
-                
-            }
-            else
-            {
-                LCD_ClearScreen();
+                state = F_Menu;
             }
             
-            count++;
             break;
         }
-        default:
+        case(F_Menu):
         {
-            LCD_DisplayString(5, "Error!!!");
+            state = F_Menu;
             break;
-        }
+        }            
     }
+    
+    return state;
 }
-
-
 // --------END User defined FSMs-----------------------------------------------
 
 // Implement scheduler code from PES.
@@ -232,17 +116,30 @@ int main()
     
     LCD_Init();
     LCD_ClearScreen();
+    ADC_Init(5, 1, 1);
+    
+    LCD_Custom_Char(0, Character1);  /* Build Character1 at position 0 */
+	LCD_Custom_Char(1, Character2);  /* Build Character2 at position 1 */
+	LCD_Custom_Char(2, Character3);  /* Build Character3 at position 2 */
+	LCD_Custom_Char(3, Character4);  /* Build Character4 at position 3 */
+	LCD_Custom_Char(4, Character5);  /* Build Character5 at position 4 */
+	LCD_Custom_Char(5, Character6);  /* Build Character6 at position 5 */
+	LCD_Custom_Char(6, Character7);  /* Build Character6 at position 6 */
+	LCD_Custom_Char(7, Character8);  /* Build Character6 at position 7 */
+
+	LCD_Command(0x80);		/*cursor at home position */
+    LCD_Command(0xc0);
     // . . . etc
 
     // Period for the tasks
-    unsigned long int Intro_calc = 300;
-    //unsigned long int SMTick2_calc = 500;
+    unsigned long int Final_calc = 25;
+    //unsigned long int Start_Screen_calc = 500;
     //unsigned long int SMTick3_calc = 1000;
     //unsigned long int SMTick4_calc = 10;
 
     //Calculating GCD
     unsigned long int tmpGCD = 1;
-    //tmpGCD = findGCD(SMTick1_calc, SMTick2_calc);
+    //tmpGCD = findGCD(Final_calc, Start_Screen_calc);
     //tmpGCD = findGCD(tmpGCD, SMTick3_calc);
     //tmpGCD = findGCD(tmpGCD, SMTick4_calc);
 
@@ -250,41 +147,21 @@ int main()
     unsigned long int GCD = tmpGCD;
 
     //Recalculate GCD periods for scheduler
-    unsigned long int intro_period = Intro_calc/GCD;
-    //unsigned long int SMTick2_period = SMTick2_calc/GCD;
+    unsigned long int Final_period = Final_calc/GCD;
+    //unsigned long int SMTick2_period = Start_Screen_calc/GCD;
     //unsigned long int SMTick3_period = SMTick3_calc/GCD;
     //unsigned long int SMTick4_period = SMTick4_calc/GCD;
 
     //Declare an array of tasks
-    static task intro;//, task2, task3, task4;
-    task *tasks[] = { &intro};//, &task2};//, &task3, &task4 };
+    static task finale;//, start;//, task3, task4;
+    task *tasks[] = { &finale};//, &start};//, &task3, &task4 };
     const unsigned short numTasks = sizeof(tasks)/sizeof(task*);
 
     // Task 1
-    intro.state = Intro_SMStart;//Task initial state.
-    intro.period = intro_period;//Task Period.
-    intro.elapsedTime = intro_period;//Task current elapsed time.
-    intro.TickFct = &Intro;//Function pointer for the tick.
-
-    /*
-    // Task 2
-    task2.state = -1;//Task initial state.
-    task2.period = SMTick2_period;//Task Period.
-    task2.elapsedTime = SMTick2_period;//Task current elapsed time.
-    task2.TickFct = &SMTick2;//Function pointer for the tick.
-
-    // Task 3
-    task3.state = -1;//Task initial state.
-    task3.period = SMTick3_period;//Task Period.
-    task3.elapsedTime = SMTick3_period; // Task current elasped time.
-    task3.TickFct = &SMTick3; // Function pointer for the tick.
-
-    // Task 4
-    task4.state = -1;//Task initial state.
-    task4.period = SMTick4_period;//Task Period.
-    task4.elapsedTime = SMTick4_period; // Task current elasped time.
-    task4.TickFct = &SMTick4; // Function pointer for the tick.
-    */
+    finale.state = Intro_SMStart;//Task initial state.
+    finale.period = Final_period;//Task Period.
+    finale.elapsedTime = Final_period;//Task current elapsed time.
+    finale.TickFct = &Final;//Function pointer for the tick.
 
     // Set the timer and turn it on
     TimerSet(GCD);

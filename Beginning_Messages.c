@@ -26,47 +26,47 @@ void Intro()
         }
         case(Intro_Stage1):
         {
-            Intro_state = Intro_Stage2;
+            //Intro_state = Intro_Stage2;
             break;
         }
         case(Intro_Stage2):
         {
-            Intro_state = Intro_Stage3;
+            //Intro_state = Intro_Stage3;
             break;
         }
         case(Intro_Stage3):
         {
-            Intro_state = Intro_Stage4;
+            //Intro_state = Intro_Stage4;
             break;
         }
         case(Intro_Stage4):
         {
-            Intro_state = Intro_Stage5;
+            //Intro_state = Intro_Stage5;
             break;
         }
         case(Intro_Stage5):
         {
-            Intro_state = Intro_Stage6;
+            //Intro_state = Intro_Stage6;
             break;
         }
         case(Intro_Stage6):
         {
-            Intro_state = Intro_Stage7;
+            //Intro_state = Intro_Stage7;
             break;
         }
         case(Intro_Stage7):
         {
-            Intro_state = Intro_Stage8;
+            //Intro_state = Intro_Stage8;
             break;
         }
         case(Intro_Stage8):
         {
-            Intro_state = Intro_Stage9; 
+            //Intro_state = Intro_Stage9; 
             break;
         }
         case(Intro_Stage9):
         {
-            Intro_state = Intro_Wait;
+            //Intro_state = Intro_Wait;
             break;
         }
         case(Intro_Wait):
@@ -96,57 +96,157 @@ void Intro()
         }
         case(Intro_Init):
         {
+            count = 0;
             LCD_ClearScreen();
             break;
         }
         case(Intro_Stage1):
         {
-            LCD_DisplayString(1, "e                              t");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "e                              t");
+                Intro_state = Intro_Stage2;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage1;
+            }
+            
+            count++;           
             break;
         }
         case(Intro_Stage2):
         {
-            LCD_DisplayString(1, "me                            to");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "me                            to");
+                Intro_state = Intro_Stage3;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage2;
+            }
+            
+            count++;
             break;
         }
         case(Intro_Stage3):
         {
-            LCD_DisplayString(1, "ome                          to ");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "ome                          to ");
+                Intro_state = Intro_Stage4;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage3;
+            }
+            
+            count++;
             break;
         }
         case(Intro_Stage4):
         {
-            LCD_DisplayString(1, "come                        to t");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "come                        to t");
+                Intro_state = Intro_Stage5;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage4;
+            }
+            
+            count++;
             break;
         }
         case(Intro_Stage5):
         {
-            LCD_DisplayString(1, "lcome                      to th");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "lcome                      to th");
+                Intro_state = Intro_Stage6;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage5;
+            }
+            
+            count++;
             break;
         }
         case(Intro_Stage6):
         {
-            LCD_DisplayString(1, "elcome                    to the");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "elcome                    to the");
+                Intro_state = Intro_Stage7;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage6;
+            }
+            
+            count++;
             break;
         }
         case(Intro_Stage7):
         {
-            LCD_DisplayString(1, "Welcome                  to the");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "Welcome                  to the");
+                Intro_state = Intro_Stage8;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage7;               
+            }
+            
+            count++;
             break;
         }
         case(Intro_Stage8):
         {
-            LCD_DisplayString(1, " Welcome                to the");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, " Welcome                to the");
+                Intro_state = Intro_Stage9;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage8;
+            }
+            
+            count++;
             break;
         }
         case(Intro_Stage9):
         {
-            LCD_DisplayString(1, "  Welcome              to the");
+            if((count % 20) == 0)
+            {
+                LCD_DisplayString(1, "  Welcome              to the");
+                Intro_state = Intro_Wait;
+                count = 0;
+            }
+            else
+            {
+                Intro_state = Intro_Stage9;
+            }
+            
+            count++;
             break;
         }
         case(Intro_Wait):
         {
-            if(count < 1)
+            if((count % 20) == 0)
             {
                 
             }
@@ -163,9 +263,9 @@ void Intro()
         case(Intro_Beat_Trainer):
         {
             count++;
-            if(count <= 9)
+            if((count % 20) == 0)
             {
-                if(count % 2 == 0)
+                if(count % 20 == 0)
                 {
                     LCD_DisplayString(7, "Beat          Trainer!");
                 }
@@ -185,7 +285,7 @@ void Intro()
         }
         case(Intro_Wait2):
         {
-            if(count <= 2)
+            if((count % 40) == 0)
             {
                 
             }
@@ -207,13 +307,13 @@ void Intro()
 
 int main()
 {
-    DDRA = 0x03;    PORTA = 0xFC;
+    DDRA = 0x07;    PORTA = 0xF8;
     DDRD = 0xFF;    PORTD = 0x00;
     
     LCD_init();
     LCD_ClearScreen();
     
-    TimerSet(650);
+    TimerSet(25);
     TimerOn();
     
     while(1)

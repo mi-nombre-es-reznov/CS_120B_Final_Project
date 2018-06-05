@@ -284,7 +284,6 @@ void Intro()
             }
             else
             {
-                LCD_DisplayString(7, "Beat          Trainer!");
                 Intro_state = Intro_Wait2;
                 count = 0;
             }
@@ -294,7 +293,7 @@ void Intro()
         }
         case(Intro_Wait2):
         {
-            if((count % 40) == 0)
+            if(count <= 120)
             {
                 
             }

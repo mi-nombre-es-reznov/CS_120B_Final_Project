@@ -37,27 +37,27 @@ signed char miss;
 
 // This array is used for whole and half notes
 short S[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
-    0x4000, 0x8000};
+            0x4000, 0x8000};
 
-enum S_States{S_SMStart, S_Init, S_Cycle, S_Wait_Message} state;
+enum S_states{S_SMStart, S_Init, S_Cycle, S_Wait_Message} Sixteenth_state;
 
 void Sixteenth()
 {
-    switch(state)
+    switch(Sixteenth_state)
     {
         case(S_SMStart):
         {
-            state = S_Init;
+            Sixteenth_state = S_Init;
             break;
         }
         case(S_Init):
         {
-            state = S_Cycle;
+            Sixteenth_state = S_Cycle;
             break;
         }
         case(S_Cycle):
         {
-            state = S_Cycle;
+            Sixteenth_state = S_Cycle;
             break;
         }
         case(S_Wait_Message):
@@ -66,12 +66,12 @@ void Sixteenth()
         }
         default:
         {
-            state = S_Init;
+            Sixteenth_state = S_Init;
             break;
         }
     }
     
-    switch(state)
+    switch(Sixteenth_state)
     {
         case(S_SMStart):
         {
@@ -126,7 +126,7 @@ void Sixteenth()
                             LCD_String("WINNER!!");
                             LCD_Cursor(18);
                             LCD_String("GO PERFORM!!!!!!");
-                            state = S_Wait_Message;
+                            Sixteenth_state = S_Wait_Message;
                         }
                     }
                     else if((~PINA & 0x20) != 0x20 && (transmit_data(S[count]) == 0x0001 || transmit_data(S[count]) == 0x0002 || transmit_data(S[count]) == 0x0004 || transmit_data(S[count]) == 0x0008 ||
@@ -160,7 +160,7 @@ void Sixteenth()
                             LCD_String("LOSER!!!");
                             LCD_Cursor(20);
                             LCD_String("TRY AGAIN?");
-                            state = S_Wait_Message;
+                            Sixteenth_state = S_Wait_Message;
                         }
                     }
                     
@@ -174,7 +174,7 @@ void Sixteenth()
 
             loop++;
             break;
-        }
+        } 
         case(S_Wait_Message):
         {
             if(wait <= 120)

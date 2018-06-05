@@ -37,25 +37,25 @@ signed char miss;
 short W[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
 0x0000, 0x0000};
 
-enum W_States{W_SMStart, W_Init, W_Cycle, W_Wait_Message} state;
+enum W_states{W_SMStart, W_Init, W_Cycle, W_Wait_Message} Whole_state;
 
 void Whole()
 {
-    switch(state)
+    switch(Whole_state)
     {
         case(W_SMStart):
         {
-            state = W_Init;
+            Whole_state = W_Init;
             break;
         }
         case(W_Init):
         {
-            state = W_Cycle;
+            Whole_state = W_Cycle;
             break;
         }
         case(W_Cycle):
         {
-            state = W_Cycle;
+            Whole_state = W_Cycle;
             break;
         }
         case(W_Wait_Message):
@@ -64,12 +64,12 @@ void Whole()
         }
         default:
         {
-            state = W_Init;
+            Whole_state = W_Init;
             break;
         }
     }
     
-    switch(state)
+    switch(Whole_state)
     {
         case(W_SMStart):
         {
@@ -121,7 +121,7 @@ void Whole()
                             LCD_String("WINNER!!");
                             LCD_Cursor(18);
                             LCD_String("TRY 1/2 NOTES?");
-                            state = W_Wait_Message;
+                            Whole_state = W_Wait_Message;
                         }
                     }
                     else if((~PINA & 0x20) != 0x20 && transmit_data(W[count]) == 0x0001)
@@ -148,7 +148,7 @@ void Whole()
                             LCD_String("LOSER!!!");
                             LCD_Cursor(20);
                             LCD_String("TRY AGAIN?");
-                            state = W_Wait_Message;
+                            Whole_state = W_Wait_Message;
                         }
                     }
                     

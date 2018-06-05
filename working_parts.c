@@ -1,24 +1,66 @@
 // Working Parts
 
-//--------Global Variables----------------------------------------------------
-unsigned char count, count2;
-//--------End Shared Variables------------------------------------------------
+// *******************************************
+// *      Shift register Call Functions      *
+// *******************************************
+short transmit_data(unsigned short data) {
+    int i;
+    for (i = 0; i < 16 ; ++i) {
+        // Sets SRCLR to 1 allowing data to be set
+        // Also clears SRCLK in preparation of sending data
+        PORTC = 0x08;
+        // set SER = next bit of data to be sent.
+        PORTC |= ((data >> i) & 0x01);
+        // set SRCLK = 1. Rising edge shifts next bit of data into the shift register
+        PORTC |= 0x02;
+    }
+    // set RCLK = 1. Rising edge copies data from “Shift” register to “Storage” register
+    PORTC |= 0x04;
+    // clears all lines in preparation of a new transmission
+    PORTC = 0x00;
+    
+    return data;
+}
 
-//--------User defined FSMs---------------------------------------------------
-//Enumeration of states.
-unsigned char start_count;
-unsigned char Intro_Flag, Start_Screen_Flag, Menu_Flag;
-unsigned long x, y = 0, read_count;
+// ****************************************************************************
+// *                           Global Variables                               *
+// ****************************************************************************
+unsigned char count, count2, start_count, x, y = 0, read_count;
+unsigned char Intro_Flag, Start_Screen_Flag, Menu_Flag, Whole_Flag;
 unsigned char whole, half, quarter, eighth, sixteenth, performance;
+unsigned char loop, wait, score, pos_place, neg_place;
+signed char miss;
 
+// ******************************************************************************************************************************
+// *                                          Arrays that will make that LED game operate                                       *
+// ******************************************************************************************************************************
+short W[] = {0x0001, 0x0000, 0x0000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
+0x0000, 0x0000};
+
+short e[] = {0x0001, 0x0000, 0x0004, 0x0000, 0x0010, 0x0000, 0x0040, 0x0000, 0x0100, 0x0000, 0x0400, 0x0000, 0x1000, 0x0000,
+0x4000, 0x0000};
+
+short S[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000,
+0x4000, 0x8000};
+
+// ****************************************************************************************************************************
+// *                                                   Enumeration Values                                                     *
+// ****************************************************************************************************************************
 enum Intro_LCD{Intro_SMStart, Intro_Init, Intro_Stage1, Intro_Stage2, Intro_Stage3,
     Intro_Stage4, Intro_Stage5, Intro_Stage6, Intro_Stage7, Intro_Stage8, Intro_Stage9,
     Intro_Wait, Intro_Beat_Trainer, Intro_Wait2} Intro_state;
 enum St_States{St_SMStart, St_Init, St_Disp, St_Van, St_Wait, St_Pressed, St_Press_Wait} St_state;
 enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait, M_Whole, M_W_Wait, M_Half, M_H_Wait, M_Quarter, M_Q_Wait,
                M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait, M_Release, M_R_Wait} Menu_state;
+enum W_states{W_SMStart, W_Init, W_Cycle, W_Wait_Message} Whole_state;
+enum H_States{H_SMStart, H_Init, H_Cycle, H_Wait_Message} Half_state;
+enum Q_states{Q_SMStart, Q_Init, Q_Cycle, Q_Wait_Message} Quarter_state;
+enum E_states{E_SMStart, E_Init, E_Cycle, E_Wait_Message} Eighth_state;
+enum S_states{S_SMStart, S_Init, S_Cycle, S_Wait_Message} Sixteenth_state;
 
-// State Machines
+// *******************************************************************************************
+// *                                       State Machines                                    *
+// *******************************************************************************************
 void Intro()
 {
     switch(Intro_state)
@@ -781,7 +823,7 @@ void Menu()
         }
         case(M_Init):
         {
-            PORTB = 0x00;
+            LCD_ClearScreen();
             whole = 0;
             half = 0;
             quarter = 0;
@@ -791,7 +833,6 @@ void Menu()
             count = 0;
             read_count = 0;
             Menu_Flag = 0;
-            LCD_Clear();
             break;
         }
         case(M_Training):
@@ -906,6 +947,767 @@ void Menu()
         default:
         {
             LCD_DisplayString(4, "ERROR!");
+            break;
+        }
+    }
+}
+
+void Whole()
+{
+    switch(Whole_state)
+    {
+        case(W_SMStart):
+        {
+            Whole_state = W_Init;
+            break;
+        }
+        case(W_Init):
+        {
+            Whole_state = W_Cycle;
+            break;
+        }
+        case(W_Cycle):
+        {
+            Whole_state = W_Cycle;
+            break;
+        }
+        case(W_Wait_Message):
+        {
+            break;
+        }
+        default:
+        {
+            Whole_state = W_Init;
+            break;
+        }
+    }
+    
+    switch(Whole_state)
+    {
+        case(W_SMStart):
+        {
+            break;
+        }
+        case(W_Init):
+        {
+            LCD_ClearScreen();
+            Whole_Flag = 0;
+            count = 0;
+            loop = 0;
+            score = 0;
+            miss = -1;
+            pos_place = 0;
+            neg_place = 0;
+            wait = 0;
+            LCD_Cursor(1);
+            LCD_String("Hit:");
+            LCD_Cursor(17);
+            LCD_String("Miss:");
+            break;
+        }
+        case(W_Cycle):
+        {
+            if((loop % 4) == 0)
+            {
+                if(count <= 15)
+                {
+                    transmit_data(W[count]);
+                    if((~PINA & 0x20) == 0x20 && transmit_data(W[count]) == 0x0001)
+                    {
+                        LCD_Cursor(6);
+                        if(score <= 8)
+                        {
+                            score++;
+                            LCD_WriteData(score + '0');
+                        }
+                        else if(score >= 9 && score <= 18)
+                        {
+                            LCD_Cursor(6);
+                            LCD_String("1");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("WINNER!!");
+                            LCD_Cursor(18);
+                            LCD_String("TRY 1/2 NOTES?");
+                            Whole_state = W_Wait_Message;
+                        }
+                    }
+                    else if((~PINA & 0x20) != 0x20 && transmit_data(W[count]) == 0x0001)
+                    {
+                        LCD_Cursor(23);
+                        if(miss <= 8)
+                        {
+                            miss++;
+                            LCD_WriteData(miss + '0');
+                        }
+                        else if(miss >= 9 && miss <= 18)
+                        {
+                            LCD_Cursor(23);
+                            LCD_String("1");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("LOSER!!!");
+                            LCD_Cursor(20);
+                            LCD_String("TRY AGAIN?");
+                            Whole_state = W_Wait_Message;
+                        }
+                    }
+                    
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+
+            loop++;
+            break;
+        }
+        case(W_Wait_Message):
+        {
+            if(wait <= 120)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+                Whole_Flag = 1;
+            }
+            
+            wait++;
+            break;
+        }
+        default:
+        {
+            transmit_data(0xFF);
+            break;
+        }
+    }
+}
+
+void Half()
+{
+    switch(Half_state)
+    {
+        case(H_SMStart):
+        {
+            Half_state = H_Init;
+            break;
+        }
+        case(H_Init):
+        {
+            Half_state = H_Cycle;
+            break;
+        }
+        case(H_Cycle):
+        {
+            Half_state = H_Cycle;
+            break;
+        }
+        case(H_Wait_Message):
+        {
+            break;
+        }
+        default:
+        {
+            Half_state = H_Init;
+            break;
+        }
+    }
+    
+    switch(Half_state)
+    {
+        case(H_SMStart):
+        {
+            break;
+        }
+        case(H_Init):
+        {
+            LCD_ClearScreen();
+            count = 0;
+            loop = 0;
+            score = 0;
+            miss = -2;
+            pos_place = 0;
+            neg_place = 0;
+            wait = 0;
+            LCD_Cursor(1);
+            LCD_String("Hit:");
+            LCD_Cursor(17);
+            LCD_String("Miss:");
+            break;
+        }
+        case(H_Cycle):
+        {
+            if((loop % 4) == 0)
+            {
+                if(count <= 15)
+                {
+                    transmit_data(W[count]);
+                    if((~PINA & 0x20) == 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
+                    {
+                        LCD_Cursor(6);
+                        if(score <= 8)
+                        {
+                            score++;
+                            LCD_WriteData(score + '0');
+                        }
+                        else if(score >= 9 && score <= 18)
+                        {
+                            LCD_Cursor(6);
+                            LCD_String("1");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("WINNER!!");
+                            LCD_Cursor(18);
+                            LCD_String("TRY 1/4 NOTES?");
+                            Half_state = H_Wait_Message;
+                        }
+                    }
+                    else if((~PINA & 0x20) != 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
+                    {
+                        LCD_Cursor(23);
+                        if(miss < 0)
+                        {
+                            miss++;
+                        }
+                        else if(miss <= 8)
+                        {
+                            miss++;
+                            LCD_WriteData(miss + '0');
+                        }
+                        else if(miss >= 9 && miss <= 18)
+                        {
+                            LCD_Cursor(23);
+                            LCD_String("1");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("LOSER!!!");
+                            LCD_Cursor(20);
+                            LCD_String("TRY AGAIN?");
+                            Half_state = H_Wait_Message;
+                        }
+                    }
+                    
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+
+            loop++;
+            break;
+        }
+        case(H_Wait_Message):
+        {
+            if(wait <= 120)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+            }
+            
+            wait++;
+            break;
+        }
+        default:
+        {
+            transmit_data(0xFF);
+            break;
+        }
+    }
+}
+
+void Quarter()
+{
+    switch(Quarter_state)
+    {
+        case(Q_SMStart):
+        {
+            Quarter_state = Q_Init;
+            break;
+        }
+        case(Q_Init):
+        {
+            Quarter_state = Q_Cycle;
+            break;
+        }
+        case(Q_Cycle):
+        {
+            Quarter_state = Q_Cycle;
+            break;
+        }
+        case(Q_Wait_Message):
+        {
+            break;
+        }
+        default:
+        {
+            Quarter_state = Q_Init;
+            break;
+        }
+    }
+    
+    switch(Quarter_state)
+    {
+        case(Q_SMStart):
+        {
+            break;
+        }
+        case(Q_Init):
+        {
+            LCD_ClearScreen();
+            count = 0;
+            loop = 0;
+            score = 0;
+            miss = -4;
+            pos_place = 0;
+            neg_place = 0;
+            wait = 0;
+            LCD_Cursor(1);
+            LCD_String("Hit:");
+            LCD_Cursor(17);
+            LCD_String("Miss:");
+            break;
+        }
+        case(Q_Cycle):
+        {
+            if((loop % 4) == 0)
+            {
+                if(count <= 15)
+                {
+                    transmit_data(W[count]);
+                    if((~PINA & 0x20) == 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
+                    {
+                        LCD_Cursor(6);
+                        if(score <= 8)
+                        {
+                            score++;
+                            LCD_WriteData(score + '0');
+                        }
+                        else if(score >= 9 && score <= 18)
+                        {
+                            LCD_Cursor(6);
+                            LCD_String("1");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("WINNER!!");
+                            LCD_Cursor(18);
+                            LCD_String("TRY 1/8 NOTES?");
+                            Quarter_state = Q_Wait_Message;
+                        }
+                    }
+                    else if((~PINA & 0x20) != 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
+                    {
+                        LCD_Cursor(23);
+                        if(miss < 0)
+                        {
+                            miss++;
+                        }
+                        else if(miss <= 8)
+                        {
+                            miss++;
+                            LCD_WriteData(miss + '0');
+                        }
+                        else if(miss >= 9 && miss <= 18)
+                        {
+                            LCD_Cursor(23);
+                            LCD_String("1");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("LOSER!!!");
+                            LCD_Cursor(20);
+                            LCD_String("TRY AGAIN?");
+                            Quarter_state = Q_Wait_Message;
+                        }
+                    }
+                    
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+
+            loop++;
+            break;
+        }
+        case(Q_Wait_Message):
+        {
+            if(wait <= 120)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+            }
+            
+            wait++;
+            break;
+        }
+        default:
+        {
+            transmit_data(0xFF);
+            break;
+        }
+    }
+}
+
+void Eighth()
+{
+    switch(Eighth_state)
+    {
+        case(E_SMStart):
+        {
+            Eighth_state = E_Init;
+            break;
+        }
+        case(E_Init):
+        {
+            Eighth_state = E_Cycle;
+            break;
+        }
+        case(E_Cycle):
+        {
+            Eighth_state = E_Cycle;
+            break;
+        }
+        case(E_Wait_Message):
+        {
+            break;
+        }
+        default:
+        {
+            Eighth_state = E_Init;
+            break;
+        }
+    }
+    
+    switch(Eighth_state)
+    {
+        case(E_SMStart):
+        {
+            break;
+        }
+        case(E_Init):
+        {
+            LCD_ClearScreen();
+            count = 0;
+            loop = 0;
+            score = 0;
+            miss = -8;
+            pos_place = 0;
+            neg_place = 0;
+            wait = 0;
+            LCD_Cursor(1);
+            LCD_String("Hit:");
+            LCD_Cursor(17);
+            LCD_String("Miss:");
+            break;
+        }
+        case(E_Cycle):
+        {
+            if((loop % 4) == 0)
+            {
+                if(count <= 15)
+                {
+                    transmit_data(e[count]);
+                    if((~PINA & 0x20) == 0x20 && (transmit_data(e[count]) == 0x0001 || transmit_data(e[count]) == 0x0004 || transmit_data(e[count]) == 0x0010 || transmit_data(e[count]) == 0x0040 ||
+                    transmit_data(e[count]) == 0x0100 || transmit_data(e[count]) == 0x0400 || transmit_data(e[count]) == 0x1000 || transmit_data(e[count]) == 0x4000))
+                    {
+                        LCD_Cursor(6);
+                        if(score <= 8)
+                        {
+                            score++;
+                            LCD_WriteData(score + '0');
+                        }
+                        else if(score >= 9 && score <= 18)
+                        {
+                            LCD_Cursor(6);
+                            LCD_String("1");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("WINNER!!");
+                            LCD_Cursor(18);
+                            LCD_String("TRY 1/16 NOTES??");
+                            Eighth_state = E_Wait_Message;
+                        }
+                    }
+                    else if((~PINA & 0x20) != 0x20 && (transmit_data(e[count]) == 0x0001 || transmit_data(e[count]) == 0x0004 || transmit_data(e[count]) == 0x0010 || transmit_data(e[count]) == 0x0040 ||
+                    transmit_data(e[count]) == 0x0100 || transmit_data(e[count]) == 0x0400 || transmit_data(e[count]) == 0x1000 || transmit_data(e[count]) == 0x4000))
+                    {
+                        LCD_Cursor(23);
+                        if(miss < 0)
+                        {
+                            miss++;
+                        }
+                        else if(miss <= 8)
+                        {
+                            miss++;
+                            LCD_WriteData(miss + '0');
+                        }
+                        else if(miss >= 9 && miss <= 18)
+                        {
+                            LCD_Cursor(23);
+                            LCD_String("1");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("LOSER!!!");
+                            LCD_Cursor(20);
+                            LCD_String("TRY AGAIN?");
+                            Eighth_state = E_Wait_Message;
+                        }
+                    }
+                    
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+
+            loop++;
+            break;
+        }
+        case(E_Wait_Message):
+        {
+            if(wait <= 120)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+            }
+            
+            wait++;
+            break;
+        }
+        default:
+        {
+            transmit_data(0xFF);
+            break;
+        }
+    }
+}
+
+void Sixteenth()
+{
+    switch(Sixteenth_state)
+    {
+        case(S_SMStart):
+        {
+            Sixteenth_state = S_Init;
+            break;
+        }
+        case(S_Init):
+        {
+            Sixteenth_state = S_Cycle;
+            break;
+        }
+        case(S_Cycle):
+        {
+            Sixteenth_state = S_Cycle;
+            break;
+        }
+        case(S_Wait_Message):
+        {
+            break;
+        }
+        default:
+        {
+            Sixteenth_state = S_Init;
+            break;
+        }
+    }
+    
+    switch(Sixteenth_state)
+    {
+        case(S_SMStart):
+        {
+            break;
+        }
+        case(S_Init):
+        {
+            LCD_ClearScreen();
+            count = 0;
+            loop = 0;
+            score = 0;
+            miss = -16;
+            pos_place = 0;
+            neg_place = 0;
+            wait = 0;
+            LCD_Cursor(1);
+            LCD_String("Hit:");
+            LCD_Cursor(17);
+            LCD_String("Miss:");
+            break;
+        }
+        case(S_Cycle):
+        {
+            if((loop % 5) == 0)
+            {
+                if(count <= 15)
+                {
+                    transmit_data(S[count]);
+                    if((~PINA & 0x20) == 0x20 && (transmit_data(S[count]) == 0x0001 || transmit_data(S[count]) == 0x0002 || transmit_data(S[count]) == 0x0004 || transmit_data(S[count]) == 0x0008 ||
+                    transmit_data(S[count]) == 0x0010 || transmit_data(S[count]) == 0x0020 || transmit_data(S[count]) == 0x0040 || transmit_data(S[count]) == 0x0080 ||
+                    transmit_data(S[count]) == 0x0100 || transmit_data(S[count]) == 0x0200 || transmit_data(S[count]) == 0x0400 || transmit_data(S[count]) == 0x0800 ||
+                    transmit_data(S[count]) == 0x1000 || transmit_data(S[count]) == 0x2000 || transmit_data(S[count]) == 0x4000 || transmit_data(S[count]) == 0x4000))
+                    {
+                        LCD_Cursor(6);
+                        if(score <= 8)
+                        {
+                            score++;
+                            LCD_WriteData(score + '0');
+                        }
+                        else if(score >= 9 && score <= 18)
+                        {
+                            LCD_Cursor(6);
+                            LCD_String("1");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("WINNER!!");
+                            LCD_Cursor(18);
+                            LCD_String("GO PERFORM!!!!!!");
+                            Sixteenth_state = S_Wait_Message;
+                        }
+                    }
+                    else if((~PINA & 0x20) != 0x20 && (transmit_data(S[count]) == 0x0001 || transmit_data(S[count]) == 0x0002 || transmit_data(S[count]) == 0x0004 || transmit_data(S[count]) == 0x0008 ||
+                    transmit_data(S[count]) == 0x0010 || transmit_data(S[count]) == 0x0020 || transmit_data(S[count]) == 0x0040 || transmit_data(S[count]) == 0x0080 ||
+                    transmit_data(S[count]) == 0x0100 || transmit_data(S[count]) == 0x0200 || transmit_data(S[count]) == 0x0400 || transmit_data(S[count]) == 0x0800 ||
+                    transmit_data(S[count]) == 0x1000 || transmit_data(S[count]) == 0x2000 || transmit_data(S[count]) == 0x4000 || transmit_data(S[count]) == 0x4000))
+                    {
+                        LCD_Cursor(23);
+                        if(miss < 0)
+                        {
+                            miss++;
+                        }
+                        else if(miss <= 8)
+                        {
+                            miss++;
+                            LCD_WriteData(miss + '0');
+                        }
+                        else if(miss >= 9 && miss <= 18)
+                        {
+                            LCD_Cursor(23);
+                            LCD_String("1");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 19)
+                        {
+                            LCD_ClearScreen();
+                            LCD_Cursor(5);
+                            LCD_String("LOSER!!!");
+                            LCD_Cursor(20);
+                            LCD_String("TRY AGAIN?");
+                            Sixteenth_state = S_Wait_Message;
+                        }
+                    }
+                    
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+
+            loop++;
+            break;
+        }
+        case(S_Wait_Message):
+        {
+            if(wait <= 120)
+            {
+                
+            }
+            else
+            {
+                LCD_ClearScreen();
+            }
+            
+            wait++;
+            break;
+        }
+        default:
+        {
+            transmit_data(0xFF);
             break;
         }
     }

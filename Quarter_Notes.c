@@ -39,25 +39,25 @@ signed char miss;
 short W[] = {0x0001, 0x0000, 0x000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
 0x0000, 0x0000};
 
-enum Q_States{Q_SMStart, Q_Init, Q_Cycle, Q_Wait_Message} state;
+enum Q_states{Q_SMStart, Q_Init, Q_Cycle, Q_Wait_Message} Quarter_state;
 
 void Quarter()
 {
-    switch(state)
+    switch(Quarter_state)
     {
         case(Q_SMStart):
         {
-            state = Q_Init;
+            Quarter_state = Q_Init;
             break;
         }
         case(Q_Init):
         {
-            state = Q_Cycle;
+            Quarter_state = Q_Cycle;
             break;
         }
         case(Q_Cycle):
         {
-            state = Q_Cycle;
+            Quarter_state = Q_Cycle;
             break;
         }
         case(Q_Wait_Message):
@@ -66,12 +66,12 @@ void Quarter()
         }
         default:
         {
-            state = Q_Init;
+            Quarter_state = Q_Init;
             break;
         }
     }
     
-    switch(state)
+    switch(Quarter_state)
     {
         case(Q_SMStart):
         {
@@ -123,7 +123,7 @@ void Quarter()
                             LCD_String("WINNER!!");
                             LCD_Cursor(18);
                             LCD_String("TRY 1/8 NOTES?");
-                            state = Q_Wait_Message;
+                            Quarter_state = Q_Wait_Message;
                         }
                     }
                     else if((~PINA & 0x20) != 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
@@ -154,7 +154,7 @@ void Quarter()
                             LCD_String("LOSER!!!");
                             LCD_Cursor(20);
                             LCD_String("TRY AGAIN?");
-                            state = Q_Wait_Message;
+                            Quarter_state = Q_Wait_Message;
                         }
                     }
                     

@@ -39,25 +39,25 @@ signed char miss;
 short e[] = {0x0001, 0x0000, 0x0004, 0x0000, 0x0010, 0x0000, 0x0040, 0x0000, 0x0100, 0x0000, 0x0400, 0x0000, 0x1000, 0x0000,
 0x4000, 0x0000};
 
-enum E_States{E_SMStart, E_Init, E_Cycle, E_Wait_Message} state;
+enum E_states{E_SMStart, E_Init, E_Cycle, E_Wait_Message} Eighth_state;
 
 void Eighth()
 {
-    switch(state)
+    switch(Eighth_state)
     {
         case(E_SMStart):
         {
-            state = E_Init;
+            Eighth_state = E_Init;
             break;
         }
         case(E_Init):
         {
-            state = E_Cycle;
+            Eighth_state = E_Cycle;
             break;
         }
         case(E_Cycle):
         {
-            state = E_Cycle;
+            Eighth_state = E_Cycle;
             break;
         }
         case(E_Wait_Message):
@@ -66,12 +66,12 @@ void Eighth()
         }
         default:
         {
-            state = E_Init;
+            Eighth_state = E_Init;
             break;
         }
     }
     
-    switch(state)
+    switch(Eighth_state)
     {
         case(E_SMStart):
         {
@@ -124,7 +124,7 @@ void Eighth()
                             LCD_String("WINNER!!");
                             LCD_Cursor(18);
                             LCD_String("TRY 1/16 NOTES??");
-                            state = E_Wait_Message;
+                            Eighth_state = E_Wait_Message;
                         }
                     }
                     else if((~PINA & 0x20) != 0x20 && (transmit_data(e[count]) == 0x0001 || transmit_data(e[count]) == 0x0004 || transmit_data(e[count]) == 0x0010 || transmit_data(e[count]) == 0x0040 ||
@@ -156,7 +156,7 @@ void Eighth()
                             LCD_String("LOSER!!!");
                             LCD_Cursor(20);
                             LCD_String("TRY AGAIN?");
-                            state = E_Wait_Message;
+                            Eighth_state = E_Wait_Message;
                         }
                     }
                     

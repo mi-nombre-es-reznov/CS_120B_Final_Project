@@ -24,14 +24,14 @@ unsigned char Character7[8] = { 0x11,0x11,0x11,0x11,0x1f,0x1f,0x1f,0x1f };    //
 unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    // Headphones
 
 //--------Global Variables----------------------------------------------------
-unsigned char count, count2;
+unsigned char count;
 //--------End Shared Variables------------------------------------------------
 
 
 //--------User defined FSMs---------------------------------------------------
 //Enumeration of states.
-enum Final_States{Fin_SMStart, Fin_Init, Fin_Intro, F_Start, F_Menu, F_which_game, F_Whole, F_Half, F_Quarter, 
-                F_Eighth, F_Sixteenth, F_Performance, F_Performance_Wait};
+enum Final_States{Fin_SMStart, Fin_Init, Fin_Intro, Fin_Start, Fin_Menu, Fin_which_game, Fin_Whole, Fin_Half, Fin_Quarter, 
+                Fin_Eighth, Fin_Sixteenth, Fin_Performance, Fin_Performance_Wait};
     
 int Final(unsigned int state)
 {
@@ -52,80 +52,80 @@ int Final(unsigned int state)
             Intro();
             break;       
         }
-        case(F_Start):
+        case(Fin_Start):
         {
             Start_Screen();
             break;
         }
-        case(F_Menu):
+        case(Fin_Menu):
         {
             Menu();
             break;
         }
-        case(F_which_game):
+        case(Fin_which_game):
         {
             if(whole == 1)
             {
-                state = F_Whole;
+                state = Fin_Whole;
             }
             else if(half == 1)
             {
-                state = F_Half;
+                state = Fin_Half;
             }
             else if(quarter == 1)
             {
-                state = F_Quarter;
+                state = Fin_Quarter;
             }
             else if(eighth == 1)
             {
-                state = F_Eighth;
+                state = Fin_Eighth;
             }
             else if(sixteenth == 1)
             {
-                state = F_Sixteenth;
+                state = Fin_Sixteenth;
             }
             else if(performance == 1)
             {
-                state = F_Performance;
+                state = Fin_Performance;
             }
             else
             {
-                state = F_Menu;
+                state = Fin_Menu;
             }
             
             break;
         }
-        case(F_Whole):
+        case(Fin_Whole):
         {
-            LCD_DisplayString(1, "In whole state");
+            Whole();
             break;
         }
-        case(F_Half):
+        case(Fin_Half):
         {
-            LCD_DisplayString(1, "In half state");
+            Half();
             break;
         }
-        case(F_Quarter):
+        case(Fin_Quarter):
         {
-            LCD_DisplayString(1, "In quarter state");
+            Quarter();
             break;
         }
-        case(F_Eighth):
+        case(Fin_Eighth):
         {
-            LCD_DisplayString(1, "In eighth state");
+            Eighth();
             break;
         }
-        case(F_Sixteenth):
+        case(Fin_Sixteenth):
         {
-            LCD_DisplayString(1, "In sixteenth state");
+            Sixteenth();
             break;
         }
-        case(F_Performance):
+        case(Fin_Performance):
         {
-            state = F_Performance_Wait;
+            state = Fin_Performance_Wait;
             break;
         }
-        case(F_Performance_Wait):
+        case(Fin_Performance_Wait):
         {
             break;
         }
@@ -144,6 +144,7 @@ int Final(unsigned int state)
         }
         case(Fin_Init):
         {
+            LCD_ClearScreen();
             count = 0;
             break;
         }
@@ -151,7 +152,7 @@ int Final(unsigned int state)
         {
             if(Intro_Flag == 1)
             {
-                state = F_Start;
+                state = Fin_Start;
             }
             else
             {
@@ -160,57 +161,70 @@ int Final(unsigned int state)
             
             break;
         }
-        case(F_Start):
+        case(Fin_Start):
         {
             if(Start_Screen_Flag == 1)
             {
-                state = F_Menu;
+                state = Fin_Menu;
             }
             else
             {
-                state = F_Start;
+                state = Fin_Start;
             }
             
             break;
         }
-        case(F_Menu):
+        case(Fin_Menu):
         {
             if(Menu_Flag == 1)
             {
-                state = F_which_game;
+                state = Fin_which_game;
             }
             else
             {
-               state = F_Menu;
+               state = Fin_Menu;
             }
             
             break;
         }       
-        case(F_which_game):
+        case(Fin_which_game):
         {
             break;
         }     
-        case(F_Whole):
+        case(Fin_Whole):
+        {
+            if(Whole_Flag == 1)
+            {
+                //Intro_Flag = 0;
+                //Start_Screen_Flag = 0;
+                //Menu_Flag = 0;
+                Whole_Flag = 0;
+                state = Fin_SMStart;
+            }
+            else
+            {
+                state = Fin_Whole;
+            }
+            
+            break;
+        }
+        case(Fin_Half):
         {
             break;
         }
-        case(F_Half):
+        case(Fin_Quarter):
         {
             break;
         }
-        case(F_Quarter):
+        case(Fin_Eighth):
         {
             break;
         }
-        case(F_Eighth):
+        case(Fin_Sixteenth):
         {
             break;
         }
-        case(F_Sixteenth):
-        {
-            break;
-        }
-        case(F_Performance):
+        case(Fin_Performance):
         {
             LCD_ClearScreen();
             LCD_Cursor(3);
@@ -227,18 +241,18 @@ int Final(unsigned int state)
             LCD_Char(7);                    
             break;
         }
-        case(F_Performance_Wait):
+        case(Fin_Performance_Wait):
         {
-            if(count <= 40)
+            if(count <= 120)
             {
-                state = F_Performance_Wait;
+                state = Fin_Performance_Wait;
             }
             else
             {
-                state = F_Menu;
+                state = Fin_Menu;
                 Menu_Flag = 0;
                 performance = 0;
-                LCD_ClearScreen();
+                //LCD_ClearScreen();
             }
             
             count++;
@@ -262,6 +276,7 @@ int main()
     // Buttons PORTA[0-7], set AVR PORTA to pull down logic
     DDRA = 0x07;    PORTA = 0xF8;
     DDRD = 0xFF;    PORTD = 0x00;
+    DDRC = 0xFF;    PORTC = 0x00;
     
     LCD_Init();
     LCD_ClearScreen();
@@ -297,13 +312,9 @@ int main()
 
     //Recalculate GCD periods for scheduler
     unsigned long int Final_period = Final_calc/GCD;
-    //unsigned long int SMTick2_period = Start_Screen_calc/GCD;
-    //unsigned long int SMTick3_period = SMTick3_calc/GCD;
-    //unsigned long int SMTick4_period = SMTick4_calc/GCD;
-
     //Declare an array of tasks
-    static task finale;//, start;//, task3, task4;
-    task *tasks[] = { &finale};//, &start};//, &task3, &task4 };
+    static task finale;
+    task *tasks[] = { &finale};
     const unsigned short numTasks = sizeof(tasks)/sizeof(task*);
 
     // Task 1
@@ -333,6 +344,8 @@ int main()
         TimerFlag = 0;
     }
 
+    LCD_ClearScreen();
+    LCD_DisplayString(1, "Program has exited!");
     // Error: Program should not exit!
     return 0;
 }

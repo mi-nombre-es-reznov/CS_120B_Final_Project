@@ -39,25 +39,25 @@ signed char miss;
 short W[] = {0x0001, 0x0000, 0x000, 0x0000, 0x0010, 0x0000, 0x0000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x1000, 0x0000,
 0x0000, 0x0000};
 
-enum H_States{H_SMStart, H_Init, H_Cycle, H_Wait_Message} state;
+enum H_states{H_SMStart, H_Init, H_Cycle, H_Wait_Message} Half_state;
 
 void Half()
 {
-    switch(state)
+    switch(Half_state)
     {
         case(H_SMStart):
         {
-            state = H_Init;
+            Half_state = H_Init;
             break;
         }
         case(H_Init):
         {
-            state = H_Cycle;
+            Half_state = H_Cycle;
             break;
         }
         case(H_Cycle):
         {
-            state = H_Cycle;
+            Half_state = H_Cycle;
             break;
         }
         case(H_Wait_Message):
@@ -66,12 +66,12 @@ void Half()
         }
         default:
         {
-            state = H_Init;
+            Half_state = H_Init;
             break;
         }
     }
     
-    switch(state)
+    switch(Half_state)
     {
         case(H_SMStart):
         {
@@ -123,7 +123,7 @@ void Half()
                             LCD_String("WINNER!!");
                             LCD_Cursor(18);
                             LCD_String("TRY 1/4 NOTES?");
-                            state = H_Wait_Message;
+                            Half_state = H_Wait_Message;
                         }
                     }
                     else if((~PINA & 0x20) != 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
@@ -154,7 +154,7 @@ void Half()
                             LCD_String("LOSER!!!");
                             LCD_Cursor(20);
                             LCD_String("TRY AGAIN?");
-                            state = H_Wait_Message;
+                            Half_state = H_Wait_Message;
                         }
                     }
                     

@@ -1,11 +1,13 @@
 // This is the first part of the LCD display that will scoll in through both sides, hard-coded.
+#define F_CPU 8000000UL
 #include <avr/io.h>
-#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <stdlib.h>
 #include "timer.h"
-#include "io.c"
 #include "io.h"
+#include "io.c"
 
-unsigned char count = 0;
+unsigned char count, count2;
 enum Intro_LCD{Intro_SMStart, Intro_Init, Intro_Stage1, Intro_Stage2, Intro_Stage3, 
     Intro_Stage4, Intro_Stage5, Intro_Stage6, Intro_Stage7, Intro_Stage8, Intro_Stage9, 
     Intro_StageA, Intro_StageB, Intro_Wait, Intro_Beat_Trainer, Intro_Wait2} Intro_state;
@@ -97,6 +99,7 @@ void Intro()
         case(Intro_Init):
         {
             count = 0;
+            count2 = 20;
             LCD_ClearScreen();
             break;
         }
@@ -246,7 +249,7 @@ void Intro()
         }
         case(Intro_Wait):
         {
-            if((count % 20) == 0)
+            if(count <= 40)
             {
                 
             }
@@ -262,25 +265,31 @@ void Intro()
         }
         case(Intro_Beat_Trainer):
         {
-            count++;
-            if((count % 20) == 0)
+            if(count <= 240)
             {
-                if(count % 20 == 0)
+                if((count2 % 20) == 0)
                 {
                     LCD_DisplayString(7, "Beat          Trainer!");
                 }
                 else
                 {
-                    LCD_ClearScreen();
+                    if((count2 % 39) == 0)
+                    {
+                        LCD_ClearScreen();
+                        count2 = 0;                      
+                    }
                 }
+                
+                count2++;
             }
             else
             {
                 LCD_DisplayString(7, "Beat          Trainer!");
                 Intro_state = Intro_Wait2;
                 count = 0;
-            }   
-            
+            }
+               
+            count++;
             break;
         }
         case(Intro_Wait2):
@@ -310,7 +319,7 @@ int main()
     DDRA = 0x07;    PORTA = 0xF8;
     DDRD = 0xFF;    PORTD = 0x00;
     
-    LCD_init();
+    LCD_Init();
     LCD_ClearScreen();
     
     TimerSet(25);

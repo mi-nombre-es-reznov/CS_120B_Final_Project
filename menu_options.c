@@ -22,7 +22,7 @@ unsigned char Character7[8] = { 0x11,0x11,0x11,0x11,0x1f,0x1f,0x1f,0x1f };    //
 unsigned char Character8[8] = { 0x1f,0x11,0x11,0x11,0x11,0x1b,0x1b,0x1b };    // Headphones
 
 // Global variables
-unsigned long x, y = 0, count = 0;
+unsigned long x, y = 0, count, read_count;
 unsigned char whole, half, quarter, eighth, sixteenth, performance;
 
 enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait, M_Whole, M_W_Wait, M_Half, M_H_Wait, M_Quarter, M_Q_Wait,
@@ -53,26 +53,31 @@ void Menu()
         }
         case(M_T_Wait):
         {
-            x = ADC_ReadData(3);
-            y = ADC_ReadData(4);
             
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 3*temp))
+            if(read_count % 14 == 0)
             {
+                x = ADC_ReadData(3);
+                y = ADC_ReadData(4);
                 
-            }
-            else if((y < 30))
-            {
-                state = M_Whole;
-            }
-            else if(x >= 3*temp && x < 9*temp)
-            {
-                state = M_Performance;
-            }
-            else
-            {
-                state = M_T_Wait;
-            }                       
+                if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 3*temp))
+                {
+                
+                }
+                else if((y < 30))
+                {
+                    state = M_Whole;
+                }
+                else if(x >= 3*temp && x < 9*temp)
+                {
+                    state = M_Performance;
+                }
+                else
+                {
+                    state = M_T_Wait;
+                } 
+            }                      
             
+            read_count++;
             break;
         }
         case(M_Whole):
@@ -82,35 +87,39 @@ void Menu()
         }
         case(M_W_Wait):
         {
-            x = ADC_ReadData(3);
-            y = ADC_ReadData(4);
-            
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            if(read_count % 14 == 0)
             {
+                x = ADC_ReadData(3);
+                y = ADC_ReadData(4);
+            
+                if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+                {
                 
-            }
-            else if((y < 30))
-            {
-                state = M_Half;
-            }
-            else if(y >= 4*temp && y < 6*temp)
-            {
-                state = M_Training;
-            }
-            else
-            {
-                state = M_W_Wait;
+                }
+                else if((y < 30))
+                {
+                    state = M_Half;
+                }
+                else if(y >= 4*temp && y < 6*temp)
+                {
+                    state = M_Training;
+                }
+                else
+                {
+                    state = M_W_Wait;
+                }
+            
+                if((~PINA & 0x20) == 0x20)
+                {
+                    LCD_Clear();
+                    LCD_DisplayString(1, "   Whole Note       Pressed!");
+                    state = M_Release;
+                    whole = 1;
+                    PORTB = 0x01;
+                }
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_Clear();
-                LCD_DisplayString(1, "   Whole Note       Pressed!");
-                state = M_Release;
-                whole = 1;
-                PORTB = 0x01;
-            }
-            
+            read_count++;
             break;
         }
         case(M_Half):
@@ -121,35 +130,39 @@ void Menu()
         }
         case(M_H_Wait):
         {
-            x = ADC_ReadData(3);
-            y = ADC_ReadData(4);
-            
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            if(read_count % 14 == 0)
             {
+                x = ADC_ReadData(3);
+                y = ADC_ReadData(4);
+            
+                if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+                {
                 
-            }
-            else if((y < 30)) // Up
-            {
-                state = M_Quarter;
-            }
-            else if(y >= 4*temp && y < 6*temp) // Right
-            {
-                state = M_Whole;
-            }
-            else
-            {
-                state = M_H_Wait;
+                }
+                else if((y < 30)) // Up
+                {
+                    state = M_Quarter;
+                }
+                else if(y >= 4*temp && y < 6*temp) // Right
+                {
+                    state = M_Whole;
+                }
+                else
+                {
+                    state = M_H_Wait;
+                }
+            
+                if((~PINA & 0x20) == 0x20)
+                {
+                    LCD_Clear();
+                    LCD_DisplayString(1, "   Half  Note       Pressed!");
+                    state = M_Release;
+                    half = 1;
+                    PORTB = 0x02;
+                }
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_Clear();
-                LCD_DisplayString(1, "   Half  Note       Pressed!");
-                state = M_Release;
-                half = 1;
-                PORTB = 0x02;
-            }
-            
+            read_count++;
             break;
         }
         case(M_Quarter):
@@ -159,35 +172,39 @@ void Menu()
         }
         case(M_Q_Wait):
         {
-            x = ADC_ReadData(3);
-            y = ADC_ReadData(4);
-            
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            if(read_count % 14 == 0)
             {
+                x = ADC_ReadData(3);
+                y = ADC_ReadData(4);
+            
+                if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+                {
                 
-            }
-            else if((y < 30)) // Up
-            {
-                state = M_Eighth;
-            }
-            else if(y >= 4*temp && y < 6*temp) // Down
-            {
-                state = M_Half;
-            }
-            else
-            {
-                state = M_Q_Wait;
+                }
+                else if((y < 30)) // Up
+                {
+                    state = M_Eighth;
+                }
+                else if(y >= 4*temp && y < 6*temp) // Down
+                {
+                    state = M_Half;
+                }
+                else
+                {
+                    state = M_Q_Wait;
+                }
+            
+                if((~PINA & 0x20) == 0x20)
+                {
+                    LCD_Clear();
+                    LCD_DisplayString(1, "  Quarter Note      Pressed!");
+                    state = M_Release;
+                    quarter = 1;
+                    PORTB = 0x04;
+                }
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_Clear();
-                LCD_DisplayString(1, "  Quarter Note      Pressed!");
-                state = M_Release;
-                quarter = 1;
-                PORTB = 0x04;
-            }
-            
+            read_count++;
             break;
         }
         case(M_Eighth):
@@ -197,35 +214,39 @@ void Menu()
         }
         case(M_E_Wait):
         {
-            x = ADC_ReadData(3);
-            y = ADC_ReadData(4);
-            
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            if(read_count % 14 == 0)
             {
+                x = ADC_ReadData(3);
+                y = ADC_ReadData(4);
+            
+                if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+                {
                 
-            }
-            else if((y < 30)) // Up
-            {
-                state = M_Sixteenth;
-            }
-            else if(y >= 4*temp && y < 6*temp) // Down
-            {
-                state = M_Quarter;
-            }
-            else
-            {
-                state = M_E_Wait;
+                }
+                else if((y < 30)) // Up
+                {
+                    state = M_Sixteenth;
+                }
+                else if(y >= 4*temp && y < 6*temp) // Down
+                {
+                    state = M_Quarter;
+                }
+                else
+                {
+                    state = M_E_Wait;
+                }
+            
+                if((~PINA & 0x20) == 0x20)
+                {
+                    LCD_Clear();
+                    LCD_DisplayString(1, "  Eighth  Note      Pressed!");
+                    state = M_Release;
+                    eighth = 1;
+                    PORTB = 0x08;
+                }
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_Clear();
-                LCD_DisplayString(1, "  Eighth  Note      Pressed!");
-                state = M_Release;
-                eighth = 1;
-                PORTB = 0x08;
-            }
-            
+            read_count++;
             break;
         }
         case(M_Sixteenth):
@@ -235,31 +256,35 @@ void Menu()
         }
         case(M_S_Wait):
         {
-            x = ADC_ReadData(3);
-            y = ADC_ReadData(4);
-            
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            if(read_count % 14 == 0)
             {
+                x = ADC_ReadData(3);
+                y = ADC_ReadData(4);
+            
+                if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+                {
                 
-            }
-            else if(y >= 4*temp && y < 6*temp) // Down
-            {
-                state = M_Eighth;
-            }
-            else
-            {
-                state = M_S_Wait;
+                }
+                else if(y >= 4*temp && y < 6*temp) // Down
+                {
+                    state = M_Eighth;
+                }
+                else
+                {
+                    state = M_S_Wait;
+                }
+            
+                if((~PINA & 0x20) == 0x20)
+                {
+                    LCD_Clear();
+                    LCD_DisplayString(1, " Sixteenth Note     Pressed!");
+                    state = M_Release;
+                    sixteenth = 1;
+                    PORTB = 0x10;
+                }
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_Clear();
-                LCD_DisplayString(1, " Sixteenth Note     Pressed!");
-                state = M_Release;
-                sixteenth = 1;
-                PORTB = 0x10;
-            }
-            
+            read_count++;
             break;
         }
         case(M_Performance):
@@ -269,58 +294,71 @@ void Menu()
         }
         case(M_P_Wait):
         {
-            x = ADC_ReadData(3);
-            y = ADC_ReadData(4);
-            
-            if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+            if(read_count % 14 == 0)
             {
+                x = ADC_ReadData(3);
+                y = ADC_ReadData(4);
+            
+                if((x >= 3*temp && x < 6*temp) && (y >= 30 && y < 4*temp))
+                {
                 
-            }
-            else if(x >= 0 && x < 2*temp)
-            {
-                state = M_Training;
-            }
-            else
-            {
-                state = M_P_Wait;
+                }
+                else if(x >= 0 && x < 2*temp)
+                {
+                    state = M_Training;
+                }
+                else
+                {
+                    state = M_P_Wait;
+                }
+            
+                if((~PINA & 0x20) == 0x20)
+                {
+                    LCD_DisplayString(1, "Performance Mode    Pressed!");
+                    state = M_Release;
+                    performance = 1;
+                    PORTB = 0xFF;
+                }
             }
             
-            if((~PINA & 0x20) == 0x20)
-            {
-                LCD_DisplayString(1, "Performance Mode    Pressed!");
-                state = M_Release;
-                performance = 1;
-                PORTB = 0xFF;
-            }
-            
+            read_count++;
             break;
         }
         case(M_Release):
         {
-            if((~PINA & 0x20) == 0x20)
+            if(read_count % 14 == 0)
             {
-                state = M_Release;
-            }
-            else
-            {
-                LCD_DisplayString(1, "  Good Shit!!!    Good Luck!!!");
-                state = M_R_Wait;
+                if((~PINA & 0x20) == 0x20)
+                {
+                    state = M_Release;
+                }
+                else
+                {
+                    LCD_DisplayString(1, "  Good Shit!!!    Good Luck!!!");
+                    state = M_R_Wait;
+                }
             }
             
+            read_count++;
             break;
         }
         case(M_R_Wait):
         {
-            if(count <= 10)
+            if(read_count % 14 == 0)
             {
+                    if(count <= 10)
+                    {
                 
-            }
-            else
-            {
-                state = M_Init;
+                    }
+                    else
+                    {
+                        state = M_Init;
+                    }
+                    
+                    count++;
             }
             
-            count++;
+            read_count++;
             break;
         }
         default:
@@ -346,6 +384,7 @@ void Menu()
             sixteenth = 0;
             performance = 0;
             count = 0;
+            read_count = 0;
             LCD_Clear();
             break;
         }
@@ -475,7 +514,7 @@ int main()
     DDRD = 0xFF; PORTD = 0x00;
     
     // Set the timer and turn it on
-    TimerSet(300);
+    TimerSet(25);
     TimerOn();
     LCD_Init();
     LCD_ClearScreen();

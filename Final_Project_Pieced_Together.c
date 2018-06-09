@@ -323,15 +323,9 @@ int main()
 
     // Period for the tasks
     unsigned long int Final_calc = 25;
-    //unsigned long int Start_Screen_calc = 500;
-    //unsigned long int SMTick3_calc = 1000;
-    //unsigned long int SMTick4_calc = 10;
 
     //Calculating GCD
     unsigned long int tmpGCD = 1;
-    //tmpGCD = findGCD(Final_calc, Start_Screen_calc);
-    //tmpGCD = findGCD(tmpGCD, SMTick3_calc);
-    //tmpGCD = findGCD(tmpGCD, SMTick4_calc);
 
     //Greatest common divisor for all tasks or smallest time unit for tasks.
     unsigned long int GCD = tmpGCD;

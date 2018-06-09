@@ -26,7 +26,7 @@ short transmit_data(unsigned short data) {
 // *                           Global Variables                               *
 // ****************************************************************************
 unsigned char count, count2, start_count, x, y = 0, read_count;
-unsigned char Intro_Flag, Start_Screen_Flag, Menu_Flag, Whole_Flag;
+unsigned char Intro_Flag, Start_Screen_Flag, Menu_Flag;
 unsigned char whole, half, quarter, eighth, sixteenth, performance;
 unsigned char loop, wait, score, pos_place, neg_place;
 signed char miss;
@@ -48,10 +48,10 @@ short S[] = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080, 0x0
 // ****************************************************************************************************************************
 enum Intro_LCD{Intro_SMStart, Intro_Init, Intro_Stage1, Intro_Stage2, Intro_Stage3,
     Intro_Stage4, Intro_Stage5, Intro_Stage6, Intro_Stage7, Intro_Stage8, Intro_Stage9,
-    Intro_Wait, Intro_Beat_Trainer, Intro_Wait2} Intro_state;
+Intro_Wait, Intro_Beat_Trainer, Intro_Wait2} Intro_state;
 enum St_States{St_SMStart, St_Init, St_Disp, St_Van, St_Wait, St_Pressed, St_Press_Wait} St_state;
 enum M_States {M_SMStart, M_Init, M_X, M_Y, M_Training, M_T_Wait, M_Whole, M_W_Wait, M_Half, M_H_Wait, M_Quarter, M_Q_Wait,
-               M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait, M_Release, M_R_Wait} Menu_state;
+M_Eighth, M_E_Wait, M_Sixteenth, M_S_Wait, M_Performance, M_P_Wait, M_Release, M_R_Wait} Menu_state;
 enum W_states{W_SMStart, W_Init, W_Cycle, W_Wait_Message} Whole_state;
 enum H_States{H_SMStart, H_Init, H_Cycle, H_Wait_Message} Half_state;
 enum Q_states{Q_SMStart, Q_Init, Q_Cycle, Q_Wait_Message} Quarter_state;
@@ -478,7 +478,6 @@ void Start_Screen()
 void Menu()
 {
     unsigned long temp = 50;
-    unsigned char tempb = 0;
     
     switch(Menu_state)
     {
@@ -800,6 +799,7 @@ void Menu()
                 else
                 {
                     Menu_Flag = 1;
+                    Menu_state = M_SMStart;
                 }
                 
                 count++;
@@ -991,7 +991,7 @@ void Whole()
         case(W_Init):
         {
             LCD_ClearScreen();
-            Whole_Flag = 0;
+            whole = 1;
             count = 0;
             loop = 0;
             score = 0;
@@ -1087,7 +1087,8 @@ void Whole()
             else
             {
                 LCD_ClearScreen();
-                Whole_Flag = 1;
+                whole = 0;
+                Whole_state = W_SMStart;
             }
             
             wait++;
@@ -1140,6 +1141,7 @@ void Half()
         case(H_Init):
         {
             LCD_ClearScreen();
+            half = 1;
             count = 0;
             loop = 0;
             score = 0;
@@ -1239,6 +1241,8 @@ void Half()
             else
             {
                 LCD_ClearScreen();
+                half = 0;
+                Half_state = H_SMStart;
             }
             
             wait++;
@@ -1291,6 +1295,7 @@ void Quarter()
         case(Q_Init):
         {
             LCD_ClearScreen();
+            quarter = 1;
             count = 0;
             loop = 0;
             score = 0;
@@ -1390,6 +1395,8 @@ void Quarter()
             else
             {
                 LCD_ClearScreen();
+                quarter = 0;
+                Quarter_state = Q_SMStart;
             }
             
             wait++;
@@ -1442,6 +1449,7 @@ void Eighth()
         case(E_Init):
         {
             LCD_ClearScreen();
+            eighth = 1;
             count = 0;
             loop = 0;
             score = 0;
@@ -1543,6 +1551,8 @@ void Eighth()
             else
             {
                 LCD_ClearScreen();
+                eighth = 0;
+                Eighth_state = E_SMStart;
             }
             
             wait++;
@@ -1595,6 +1605,7 @@ void Sixteenth()
         case(S_Init):
         {
             LCD_ClearScreen();
+            sixteenth = 1;
             count = 0;
             loop = 0;
             score = 0;
@@ -1700,6 +1711,8 @@ void Sixteenth()
             else
             {
                 LCD_ClearScreen();
+                sixteenth = 0;
+                Sixteenth_state = S_SMStart;
             }
             
             wait++;

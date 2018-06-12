@@ -780,7 +780,19 @@ void Menu()
                 }
                 else
                 {
-                    LCD_DisplayString(1, "  Good Shit!!!    Good Luck!!!");
+                    LCD_ClearScreen();
+                    LCD_Cursor(1);
+                    LCD_Char(7);
+                    LCD_Cursor(3);
+                    LCD_String("Good Choice!");
+                    LCD_Cursor(16);
+                    LCD_Char(7);
+                    LCD_Cursor(18);
+                    LCD_Char(7);
+                    LCD_Cursor(20);
+                    LCD_String("Good Luck!");
+                    LCD_Cursor(31);
+                    LCD_Char(7);
                     Menu_state = M_R_Wait;
                 }
             }

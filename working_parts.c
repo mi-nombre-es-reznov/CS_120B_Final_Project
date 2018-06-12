@@ -561,7 +561,7 @@ void Menu()
                     LCD_DisplayString(1, "   Whole Note       Pressed!");
                     Menu_state = M_Release;
                     whole = 1;
-                    PORTB = 0x01;
+                    //PORTB = 0x01;
                 }
             }
             
@@ -604,7 +604,7 @@ void Menu()
                     LCD_DisplayString(1, "   Half  Note       Pressed!");
                     Menu_state = M_Release;
                     half = 1;
-                    PORTB = 0x02;
+                    //PORTB = 0x02;
                 }
             }
             
@@ -646,7 +646,7 @@ void Menu()
                     LCD_DisplayString(1, "  Quarter Note      Pressed!");
                     Menu_state = M_Release;
                     quarter = 1;
-                    PORTB = 0x04;
+                    //PORTB = 0x04;
                 }
             }
             
@@ -688,7 +688,7 @@ void Menu()
                     LCD_DisplayString(1, "  Eighth  Note      Pressed!");
                     Menu_state = M_Release;
                     eighth = 1;
-                    PORTB = 0x08;
+                    //PORTB = 0x08;
                 }
             }
             
@@ -726,7 +726,7 @@ void Menu()
                     LCD_DisplayString(1, " Sixteenth Note     Pressed!");
                     Menu_state = M_Release;
                     sixteenth = 1;
-                    PORTB = 0x10;
+                    //PORTB = 0x10;
                 }
             }
             
@@ -763,7 +763,7 @@ void Menu()
                     LCD_DisplayString(1, "Performance Mode    Pressed!");
                     Menu_state = M_Release;
                     performance = 1;
-                    PORTB = 0xFF;
+                    //PORTB = 0xFF;
                 }
             }
             
@@ -1012,7 +1012,7 @@ void Whole()
                 if(count <= 15)
                 {
                     transmit_data(W[count]);
-                    if((~PINA & 0x20) == 0x20 && transmit_data(W[count]) == 0x0001)
+                    if((~PINB & 0x01) == 0x01 && transmit_data(W[count]) == 0x0001)
                     {
                         LCD_Cursor(6);
                         if(score <= 8)
@@ -1039,7 +1039,7 @@ void Whole()
                             Whole_state = W_Wait_Message;
                         }
                     }
-                    else if((~PINA & 0x20) != 0x20 && transmit_data(W[count]) == 0x0001)
+                    else if((~PINB & 0x01) != 0x01 && transmit_data(W[count]) == 0x0001)
                     {
                         LCD_Cursor(23);
                         if(miss <= 8)
@@ -1162,7 +1162,7 @@ void Half()
                 if(count <= 15)
                 {
                     transmit_data(W[count]);
-                    if((~PINA & 0x20) == 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
+                    if((~PINB & 0x01) == 0x01 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
                     {
                         LCD_Cursor(6);
                         if(score <= 8)
@@ -1189,7 +1189,7 @@ void Half()
                             Half_state = H_Wait_Message;
                         }
                     }
-                    else if((~PINA & 0x20) != 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
+                    else if((~PINB & 0x01) != 0x01 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0100))
                     {
                         LCD_Cursor(23);
                         if(miss < 0)
@@ -1316,7 +1316,7 @@ void Quarter()
                 if(count <= 15)
                 {
                     transmit_data(W[count]);
-                    if((~PINA & 0x20) == 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
+                    if((~PINB & 0x01) == 0x01 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
                     {
                         LCD_Cursor(6);
                         if(score <= 8)
@@ -1343,7 +1343,7 @@ void Quarter()
                             Quarter_state = Q_Wait_Message;
                         }
                     }
-                    else if((~PINA & 0x20) != 0x20 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
+                    else if((~PINB & 0x01) != 0x01 && (transmit_data(W[count]) == 0x0001 || transmit_data(W[count]) == 0x0010 || transmit_data(W[count]) == 0x0100 || transmit_data(W[count]) == 0x1000))
                     {
                         LCD_Cursor(23);
                         if(miss < 0)
@@ -1470,7 +1470,7 @@ void Eighth()
                 if(count <= 15)
                 {
                     transmit_data(e[count]);
-                    if((~PINA & 0x20) == 0x20 && (transmit_data(e[count]) == 0x0001 || transmit_data(e[count]) == 0x0004 || transmit_data(e[count]) == 0x0010 || transmit_data(e[count]) == 0x0040 ||
+                    if((~PINB & 0x01) == 0x01 && (transmit_data(e[count]) == 0x0001 || transmit_data(e[count]) == 0x0004 || transmit_data(e[count]) == 0x0010 || transmit_data(e[count]) == 0x0040 ||
                     transmit_data(e[count]) == 0x0100 || transmit_data(e[count]) == 0x0400 || transmit_data(e[count]) == 0x1000 || transmit_data(e[count]) == 0x4000))
                     {
                         LCD_Cursor(6);
@@ -1498,7 +1498,7 @@ void Eighth()
                             Eighth_state = E_Wait_Message;
                         }
                     }
-                    else if((~PINA & 0x20) != 0x20 && (transmit_data(e[count]) == 0x0001 || transmit_data(e[count]) == 0x0004 || transmit_data(e[count]) == 0x0010 || transmit_data(e[count]) == 0x0040 ||
+                    else if((~PINB & 0x01) != 0x01 && (transmit_data(e[count]) == 0x0001 || transmit_data(e[count]) == 0x0004 || transmit_data(e[count]) == 0x0010 || transmit_data(e[count]) == 0x0040 ||
                     transmit_data(e[count]) == 0x0100 || transmit_data(e[count]) == 0x0400 || transmit_data(e[count]) == 0x1000 || transmit_data(e[count]) == 0x4000))
                     {
                         LCD_Cursor(23);
@@ -1626,7 +1626,7 @@ void Sixteenth()
                 if(count <= 15)
                 {
                     transmit_data(S[count]);
-                    if((~PINA & 0x20) == 0x20 && (transmit_data(S[count]) == 0x0001 || transmit_data(S[count]) == 0x0002 || transmit_data(S[count]) == 0x0004 || transmit_data(S[count]) == 0x0008 ||
+                    if((~PINB & 0x01) == 0x01 && (transmit_data(S[count]) == 0x0001 || transmit_data(S[count]) == 0x0002 || transmit_data(S[count]) == 0x0004 || transmit_data(S[count]) == 0x0008 ||
                     transmit_data(S[count]) == 0x0010 || transmit_data(S[count]) == 0x0020 || transmit_data(S[count]) == 0x0040 || transmit_data(S[count]) == 0x0080 ||
                     transmit_data(S[count]) == 0x0100 || transmit_data(S[count]) == 0x0200 || transmit_data(S[count]) == 0x0400 || transmit_data(S[count]) == 0x0800 ||
                     transmit_data(S[count]) == 0x1000 || transmit_data(S[count]) == 0x2000 || transmit_data(S[count]) == 0x4000 || transmit_data(S[count]) == 0x4000))
@@ -1656,7 +1656,7 @@ void Sixteenth()
                             Sixteenth_state = S_Wait_Message;
                         }
                     }
-                    else if((~PINA & 0x20) != 0x20 && (transmit_data(S[count]) == 0x0001 || transmit_data(S[count]) == 0x0002 || transmit_data(S[count]) == 0x0004 || transmit_data(S[count]) == 0x0008 ||
+                    else if((~PINB & 0x01) != 0x01 && (transmit_data(S[count]) == 0x0001 || transmit_data(S[count]) == 0x0002 || transmit_data(S[count]) == 0x0004 || transmit_data(S[count]) == 0x0008 ||
                     transmit_data(S[count]) == 0x0010 || transmit_data(S[count]) == 0x0020 || transmit_data(S[count]) == 0x0040 || transmit_data(S[count]) == 0x0080 ||
                     transmit_data(S[count]) == 0x0100 || transmit_data(S[count]) == 0x0200 || transmit_data(S[count]) == 0x0400 || transmit_data(S[count]) == 0x0800 ||
                     transmit_data(S[count]) == 0x1000 || transmit_data(S[count]) == 0x2000 || transmit_data(S[count]) == 0x4000 || transmit_data(S[count]) == 0x4000))

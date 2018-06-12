@@ -28,8 +28,9 @@ short transmit_data(unsigned short data) {
 unsigned char count, count2, start_count, x, y = 0, read_count;
 unsigned char Intro_Flag, Start_Screen_Flag, Menu_Flag;
 unsigned char whole, half, quarter, eighth, sixteenth, performance;
-unsigned char loop, wait, score, pos_place, neg_place;
+unsigned char loop, score, pos_place, neg_place;
 signed char miss;
+unsigned short wait;
 
 // ******************************************************************************************************************************
 // *                                          Arrays that will make that LED game operate                                       *
@@ -1048,8 +1049,16 @@ void Whole()
                         else if(score >= 19)
                         {
                             LCD_ClearScreen();
+                            LCD_Cursor(2);
+                            LCD_Char(6);
+                            LCD_Cursor(3);
+                            LCD_Char(6);
                             LCD_Cursor(5);
                             LCD_String("WINNER!!");
+                            LCD_Cursor(14);
+                            LCD_Char(6);
+                            LCD_Cursor(15);
+                            LCD_Char(6);
                             LCD_Cursor(18);
                             LCD_String("TRY 1/2 NOTES?");
                             Whole_state = W_Wait_Message;
@@ -1096,7 +1105,7 @@ void Whole()
         }
         case(W_Wait_Message):
         {
-            if(wait <= 120)
+            if(wait <= 180)
             {
                 
             }
@@ -1202,8 +1211,16 @@ void Half()
                         else if(score >= 19)
                         {
                             LCD_ClearScreen();
+                            LCD_Cursor(2);
+                            LCD_Char(6);
+                            LCD_Cursor(3);
+                            LCD_Char(6);
                             LCD_Cursor(5);
                             LCD_String("WINNER!!");
+                            LCD_Cursor(14);
+                            LCD_Char(6);
+                            LCD_Cursor(15);
+                            LCD_Char(6);
                             LCD_Cursor(18);
                             LCD_String("TRY 1/4 NOTES?");
                             Half_state = H_Wait_Message;
@@ -1254,7 +1271,7 @@ void Half()
         }
         case(H_Wait_Message):
         {
-            if(wait <= 120)
+            if(wait <= 180)
             {
                 
             }
@@ -1375,8 +1392,16 @@ void Quarter()
                         else if(score >= 29)
                         {
                             LCD_ClearScreen();
+                            LCD_Cursor(2);
+                            LCD_Char(6);
+                            LCD_Cursor(3);
+                            LCD_Char(6);
                             LCD_Cursor(5);
                             LCD_String("WINNER!!");
+                            LCD_Cursor(14);
+                            LCD_Char(6);
+                            LCD_Cursor(15);
+                            LCD_Char(6);
                             LCD_Cursor(18);
                             LCD_String("TRY 1/8 NOTES?");
                             Quarter_state = Q_Wait_Message;
@@ -1441,7 +1466,7 @@ void Quarter()
         }
         case(Q_Wait_Message):
         {
-            if(wait <= 120)
+            if(wait <= 180)
             {
                 
             }
@@ -1605,8 +1630,16 @@ void Eighth()
                         else if(score >= 59)
                         {
                             LCD_ClearScreen();
+                            LCD_Cursor(2);
+                            LCD_Char(6);
+                            LCD_Cursor(3);
+                            LCD_Char(6);
                             LCD_Cursor(5);
                             LCD_String("WINNER!!");
+                            LCD_Cursor(14);
+                            LCD_Char(6);
+                            LCD_Cursor(15);
+                            LCD_Char(6);
                             LCD_Cursor(18);
                             LCD_String("TRY 1/16 NOTES??");
                             Eighth_state = E_Wait_Message;
@@ -1714,7 +1747,7 @@ void Eighth()
         }
         case(E_Wait_Message):
         {
-            if(wait <= 120)
+            if(wait <= 180)
             {
                 
             }
@@ -1931,10 +1964,22 @@ void Sixteenth()
                         else if(score >= 99)
                         {
                             LCD_ClearScreen();
+                            LCD_Cursor(2);
+                            LCD_Char(6);
+                            LCD_Cursor(3);
+                            LCD_Char(6);
                             LCD_Cursor(5);
                             LCD_String("WINNER!!");
-                            LCD_Cursor(18);
-                            LCD_String("GO PERFORM!!!!!!");
+                            LCD_Cursor(14);
+                            LCD_Char(6);
+                            LCD_Cursor(15);
+                            LCD_Char(6);
+                            LCD_Cursor(17);
+                            LCD_Char(7);
+                            LCD_Cursor(19);
+                            LCD_String("GO PERFORM!!");
+                            LCD_Cursor(32);
+                            LCD_Char(7);
                             Sixteenth_state = S_Wait_Message;
                         }
                     }
@@ -2098,7 +2143,7 @@ void Sixteenth()
         }
         case(S_Wait_Message):
         {
-            if(wait <= 120)
+            if(wait <= 180)
             {
                 
             }

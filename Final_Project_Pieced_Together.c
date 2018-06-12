@@ -208,6 +208,12 @@ int Final(unsigned int state)
         }
         case(Fin_Half):
         {
+            if(half == 0)
+            {
+                Menu_Flag = 0;
+                state = Fin_Menu;
+            }
+            
             break;
         }
         case(Fin_Quarter):
@@ -231,7 +237,7 @@ int Final(unsigned int state)
             break;
         }
         case(Fin_Sixteenth):
-        {   
+        {
             if(sixteenth == 0)
             {
                 Menu_Flag = 0;

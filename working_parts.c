@@ -306,7 +306,7 @@ void Intro()
         }
         case(Intro_Beat_Trainer):
         {
-            if(count <= 240)
+            if(count <= 120)
             {
                 if((count2 % 20) == 0)
                 {
@@ -1001,8 +1001,12 @@ void Whole()
             wait = 0;
             LCD_Cursor(1);
             LCD_String("Hit:");
+            LCD_Cursor(6);
+            LCD_WriteData('0');
             LCD_Cursor(17);
             LCD_String("Miss:");
+            LCD_Cursor(23);
+            LCD_WriteData('0');
             break;
         }
         case(W_Cycle):
@@ -1151,8 +1155,12 @@ void Half()
             wait = 0;
             LCD_Cursor(1);
             LCD_String("Hit:");
+            LCD_Cursor(6);
+            LCD_WriteData('0');
             LCD_Cursor(17);
             LCD_String("Miss:");
+            LCD_Cursor(23);
+            LCD_WriteData('0');
             break;
         }
         case(H_Cycle):
@@ -1305,8 +1313,12 @@ void Quarter()
             wait = 0;
             LCD_Cursor(1);
             LCD_String("Hit:");
+            LCD_Cursor(6);
+            LCD_WriteData('0');
             LCD_Cursor(17);
             LCD_String("Miss:");
+            LCD_Cursor(23);
+            LCD_WriteData('0');
             break;
         }
         case(Q_Cycle):
@@ -1322,18 +1334,33 @@ void Quarter()
                         if(score <= 8)
                         {
                             score++;
+                            LCD_Cursor(6);
                             LCD_WriteData(score + '0');
                         }
                         else if(score >= 9 && score <= 18)
-                        {
+                        {   
                             LCD_Cursor(6);
                             LCD_String("1");
                             LCD_Cursor(7);
                             LCD_WriteData(pos_place + '0');
                             pos_place++;
-                            score++;
+                            score++;                           
                         }
-                        else if(score >= 19)
+                        else if(score >= 19 && score <= 28)
+                        {
+                            if(score == 19)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("2");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;                           
+                        }
+                        else if(score >= 29)
                         {
                             LCD_ClearScreen();
                             LCD_Cursor(5);
@@ -1356,15 +1383,29 @@ void Quarter()
                             LCD_WriteData(miss + '0');
                         }
                         else if(miss >= 9 && miss <= 18)
-                        {
+                        {                           
                             LCD_Cursor(23);
                             LCD_String("1");
                             LCD_Cursor(24);
                             LCD_WriteData(neg_place + '0');
                             neg_place++;
-                            miss++;
+                            miss++;               
                         }
-                        else if(miss >= 19)
+                        else if(miss >= 19 && miss <= 28)
+                        {                
+                            if(miss == 19)
+                            {
+                                neg_place = 0;
+                            }       
+                                                       
+                            LCD_Cursor(23);
+                            LCD_String("2");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;                         
+                        }
+                        else if(miss >= 29)
                         {
                             LCD_ClearScreen();
                             LCD_Cursor(5);
@@ -1459,8 +1500,12 @@ void Eighth()
             wait = 0;
             LCD_Cursor(1);
             LCD_String("Hit:");
+            LCD_Cursor(6);
+            LCD_WriteData('0');
             LCD_Cursor(17);
             LCD_String("Miss:");
+            LCD_Cursor(23);
+            LCD_WriteData('0');
             break;
         }
         case(E_Cycle):
@@ -1477,6 +1522,7 @@ void Eighth()
                         if(score <= 8)
                         {
                             score++;
+                            LCD_Cursor(6);
                             LCD_WriteData(score + '0');
                         }
                         else if(score >= 9 && score <= 18)
@@ -1488,7 +1534,63 @@ void Eighth()
                             pos_place++;
                             score++;
                         }
-                        else if(score >= 19)
+                        else if(score >= 19 && score <= 28)
+                        {
+                            if(score == 19)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("2");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 29 && score <= 38)
+                        {
+                            if(score == 29)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("3");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 39 && score <= 48)
+                        {
+                            if(score == 39)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("4");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 49 && score <= 58)
+                        {
+                            if(score == 49)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("5");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 59)
                         {
                             LCD_ClearScreen();
                             LCD_Cursor(5);
@@ -1520,14 +1622,70 @@ void Eighth()
                             neg_place++;
                             miss++;
                         }
-                        else if(miss >= 19)
+                        else if(miss >= 19 && miss <= 28)
                         {
-                            LCD_ClearScreen();
-                            LCD_Cursor(5);
-                            LCD_String("LOSER!!!");
-                            LCD_Cursor(20);
-                            LCD_String("TRY AGAIN?");
-                            Eighth_state = E_Wait_Message;
+                            if(miss == 19)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("2");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 29 && miss <= 38)
+                        {
+                            if(miss == 29)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("3");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 39 && miss <= 48)
+                        {
+                            if(miss == 39)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("4");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 49 && miss <= 58)
+                        {
+                            if(miss == 49)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("5");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 59)
+                        {                             
+                             LCD_ClearScreen();
+                             LCD_Cursor(5);
+                             LCD_String("LOSER!!!");
+                             LCD_Cursor(20);
+                             LCD_String("TRY AGAIN?");
+                             Eighth_state = E_Wait_Message;
                         }
                     }
                     
@@ -1646,7 +1804,119 @@ void Sixteenth()
                             pos_place++;
                             score++;
                         }
-                        else if(score >= 19)
+                        else if(score >= 19 && score <= 28)
+                        {
+                            if(score == 19)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("2");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 29 && score <= 38)
+                        {
+                            if(score == 29)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("3");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 39 && score <= 48)
+                        {
+                            if(score == 39)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("4");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 49 && score <= 58)
+                        {
+                            if(score == 49)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("5");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 59 && score <= 68)
+                        {
+                            if(score == 59)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("6");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 69 && score <= 78)
+                        {
+                            if(score == 69)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("7");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 79 && score <= 88)
+                        {
+                            if(score == 79)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("8");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 89 && score <= 98)
+                        {
+                            if(score == 89)
+                            {
+                                pos_place = 0;
+                            }
+                            
+                            LCD_Cursor(6);
+                            LCD_String("9");
+                            LCD_Cursor(7);
+                            LCD_WriteData(pos_place + '0');
+                            pos_place++;
+                            score++;
+                        }
+                        else if(score >= 99)
                         {
                             LCD_ClearScreen();
                             LCD_Cursor(5);
@@ -1680,7 +1950,119 @@ void Sixteenth()
                             neg_place++;
                             miss++;
                         }
-                        else if(miss >= 19)
+                        else if(miss >= 19 && miss <= 28)
+                        {
+                            if(miss == 19)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("2");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 29 && miss <= 38)
+                        {
+                            if(miss == 29)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("3");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 39 && miss <= 48)
+                        {
+                            if(miss == 39)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("4");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 49 && miss <= 58)
+                        {
+                            if(miss == 49)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("5");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 59 && miss <= 68)
+                        {
+                            if(miss == 59)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("6");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 69 && miss <= 78)
+                        {
+                            if(miss == 69)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("7");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 79 && miss <= 88)
+                        {
+                            if(miss == 79)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("8");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }
+                        else if(miss >= 89 && miss <= 98)
+                        {
+                            if(miss == 89)
+                            {
+                                neg_place = 0;
+                            }
+                            
+                            LCD_Cursor(23);
+                            LCD_String("9");
+                            LCD_Cursor(24);
+                            LCD_WriteData(neg_place + '0');
+                            neg_place++;
+                            miss++;
+                        }                        
+                        else if(miss >= 99)
                         {
                             LCD_ClearScreen();
                             LCD_Cursor(5);

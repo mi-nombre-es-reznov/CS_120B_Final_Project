@@ -88,7 +88,10 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <p>Here is the option for Whole Notes. In this game, the player will only tap on the first lit LED, the other three are there to help the player with timing.</p><br><br>
 
-<img src="Whole_Notes.JPG" alt="Whole Notes picture not found!" title="This is the option menu for the Whole Notes"/>
+<img src="Whole_Notes.JPG" alt="Whole Notes picture not found!" title="This is the option menu for the Whole Notes"/><br>
+
+<img src="LED.JPG" alt="Whole Note LED picture not found!" title="This is the Whole Notes LED lights to be hit."/>
+
 
 <br><br>
 
@@ -96,7 +99,9 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <p>Here is the option for Half Notes. In this game, the player will only tap on the first and third lit LEDs, the others are there to help the player with timing.</p><br><br>
 
-<img src="Half_Notes.JPG" alt="Half Notes picture not found!" title="This is the option menu for the Half Notes"/>
+<img src="Half_Notes.JPG" alt="Half Notes picture not found!" title="This is the option menu for the Half Notes"/><br>
+
+<img src="2_LEDs.JPG" alt="Half Note LED picture not found!" title="These are the Half Notes LED lights to be hit."/>
 
 <br><br>
 
@@ -104,7 +109,9 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <p>Here is the option for Quarter Notes. In this game, the player will only tap on the every four LEDs (or every LED that lights up in that game mode).</p><br><br>
 
-<img src="Quarter_Notes.JPG" alt="Quarter Notes picture not found!" title="This is the option menu for the Quarter Notes"/>
+<img src="Quarter_Notes.JPG" alt="Quarter Notes picture not found!" title="This is the option menu for the Quarter Notes"/><br>
+
+<img src="4_LEDs.JPG" alt="Quarter Note LED picture not found!" title="These are the Quarter Notes LED lights to be hit."/>
 
 <br><br>
 
@@ -112,7 +119,9 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <p>Here is the option for Eighth Notes. In this game, the player will only tap on evey other lit LED (all LEDS that light up in the gameplay).</p><br><br>
 
-<img src="Eighth_Notes.JPG" alt="Eighth Notes picture not found!" title="This is the option menu for the Eighth Notes"/>
+<img src="Eighth_Notes.JPG" alt="Eighth Notes picture not found!" title="This is the option menu for the Eighth Notes"/><br>
+
+<img src="8th_LEDs.JPG" alt="Eighth Note LED picture not found!" title="These are the Eighth Notes LED lights to be hit."/>
 
 <br><br>
 
@@ -120,7 +129,9 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <p>Here is the option for Sixteenth Notes. In this game, the player will tap on every LED that lights up (all 16 LEDs will light up).</p><br><br>
 
-<img src="Sixteenth_Notes.JPG" alt="Sixteenth Notes picture not found!" title="This is the option menu for the Sixteenth Notes"/>
+<img src="Sixteenth_Notes.JPG" alt="Sixteenth Notes picture not found!" title="This is the option menu for the Sixteenth Notes"/><br>
+
+<img src="16th.JPG" alt="Sixteenth Note LED picture not found!" title="These are the Sixteenth Notes LED lights to be hit."/>
 
 <br><br>
 

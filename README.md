@@ -118,7 +118,7 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <h4>Sixteenth Notes</h4>
 
-<p>Here is the option for Sixteenth Notes. In this game, the player will only tap on every LED that lights up (all 16 LEDs will light up).</p><br><br>
+<p>Here is the option for Sixteenth Notes. In this game, the player will tap on every LED that lights up (all 16 LEDs will light up).</p><br><br>
 
 <img src="Sixteenth_Notes.JPG" alt="Sixteenth Notes picture not found!" title="This is the option menu for the Sixteenth Notes"/>
 

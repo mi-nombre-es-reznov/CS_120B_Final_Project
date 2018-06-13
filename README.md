@@ -62,7 +62,11 @@ I had completed.</p>
 from the Start Screen."/></p>
 
 <p>This second of 2 pictures shows the second part of the Menu Screen that gives it the dynamic, waiting effect. <br><br> <img src="Press_Start_2.JPG" alt="Part 2 of Start Screen not found!" title="Here is the second of the 
-two pictures, from the Start Screen."/></p>
+two pictures, from the Start Screen."/></p><br>
+
+<p>These two pictures, when together, produce a "push-button", especially when in a loop.</p><br>
+
+<h3>Custom Characters</h3>
  
 <p>The picture shows the different custom characters that I have in the game. <br><br> <img src="custom_chars.JPG" alt="Custom characters not found!" title="This is an image showcasing all 8 custom characters that I created."/>
 

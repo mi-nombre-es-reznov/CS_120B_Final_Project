@@ -56,6 +56,8 @@ I had completed.</p>
 
 <p>I used the LCD screen to not only hold my messages, but it also the main spot or holding a players score.</p>
 
+<h3>The Start Screen</h3>
+
 <p>This picture shows the Start menu screen, with two of the custom characters being implemented. <br><br> <img src="Press_Start.JPG" alt="Part 1 of Start Screen not found!" title="Here is the first of the two pictures,
  from the Start Screen."/></p>
  

@@ -84,8 +84,52 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <br><br>
 
+<h4>Whole Notes</h4>
+
+<p>Here is the option for Whole Notes. In this game, the player will only tap on the first lit LED, the other three are there to help the player with timing.</p><br><br>
+
+<img src="Whole_Notes.JPG" alt="Whole Notes picture not found!" title="This is the option menu for the Whole Notes"/>
+
+<br><br>
+
+<h4>Half Notes</h4>
+
+<p>Here is the option for Half Notes. In this game, the player will only tap on the first and third lit LEDs, the other three are there to help the player with timing.</p><br><br>
+
+<img src="Half_Notes.JPG" alt="Half Notes picture not found!" title="This is the option menu for the Half Notes"/>
+
+<br><br>
+
 <h4>Quarter Notes</h4>
 
-<p>Here is the option for Quarter Notes. In this game, the player will only tap on the first lit LED, the other three are there to help the player with timing.</p><br><br>
+<p>Here is the option for Quarter Notes. In this game, the player will only tap on the every four LEDs (or every LED that lights up in that game mode).</p><br><br>
 
 <img src="Quarter_Notes.JPG" alt="Quarter Notes picture not found!" title="This is the option menu for the Quarter Notes"/>
+
+<br><br>
+
+<h4>Eighth Notes</h4>
+
+<p>Here is the option for Eighth Notes. In this game, the player will only tap on evey other lit LED (all LEDS that light up in the gameplay).</p><br><br>
+
+<img src="Eighth_Notes.JPG" alt="Eighth Notes picture not found!" title="This is the option menu for the Eighth Notes"/>
+
+<br><br>
+
+<h4>Sixteenth Notes</h4>
+
+<p>Here is the option for Sixteenth Notes. In this game, the player will only tap on every LED that lights up (all 16 LEDs will light up).</p><br><br>
+
+<img src="Sixteenth_Notes.JPG" alt="Sixteenth Notes picture not found!" title="This is the option menu for the Sixteenth Notes"/>
+
+<br><br>
+
+<h4>Performance Mode</h4>
+
+<p>Here is the option for Performance Mode. This option is still in <b>BETA</b> and is not available for actual gameplay yet.</p><br><br>
+
+<img src="Performance.JPG" alt="Performance Mode picture not found!" title="This is the option Menu screen for the 'in the making' Performance mode"/>
+
+<br><br>
+
+<p>All of these differing menu options can be found in the <em>working_parts.c</m> file.</p>

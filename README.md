@@ -57,3 +57,10 @@ I had completed.</p>
 <p>I used the LCD screen to not only hold my messages, but it also the main spot or holding a players score.</p>
 
 <p>The picture shows the different custom characters that I have in the game. <br><br> <img src="custom_chars.JPG" alt="Custom characters not found!" title="This is an image showcasing all 8 custom characters that I created."/>
+
+<h3>The Menu Screen</h3>
+
+<p>The Menu screen state, found in <em>menu_options.c</em>, holds the different gameplay options. It has both the <em>"Training"</em> and <em>"Performance"</em> mode in it, although, the Performance mode currently isn't operable.
+Below are the different Menu options one has to choose from.</p><br><br>
+
+<img src="Training.JPG" alt="Training picture not found!" title="A picture of the Training screen option, in the Menu state." />

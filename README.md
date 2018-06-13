@@ -34,7 +34,7 @@ test if it works properly. If this test code works as intended, then I shall sti
 
 <br>
 
-<p>Here is the second message that appears after the first finishes its cycle.<br><br>This is the flashing message that states, "Beat Trainer!"<br>
+<p>Here is the second message that appears after the first finishes its cycle.<br><br>This is the flashing message that states, "Beat Trainer!"<br><br>
 <img src="Beat_Trainer.JPG" alt="Beat Trainer" title="Secondary intro message that flashes 'Beat Trainer'."/></p>
 
 <p><strong>If you would like to see the video of the code in action, you can see it <a href="https://youtu.be/miQS9gsfXd8" title="Let's go see it!!!">NOW!</a></strong></p>
@@ -45,7 +45,7 @@ test if it works properly. If this test code works as intended, then I shall sti
 <p>I conducted a test to get the joystick working in the four main directions: north (up), south (down), east (right) and west (left).<br><br>
 <strong>The video showing some results from the test is found <a href="https://youtu.be/vbepWqkhsp4" title="An early model of the working joystick">HERE!</strong></a></p>
 
-<p>The joystick looks like this: <br> <img src="joystick.JPG" alt="Joystick image not found"  title="This is what the joystick looks like, it's just like the joystick on your favorite gaming controller." /></p>
+<p>The joystick looks like this: <br><br> <img src="joystick.JPG" alt="Joystick image not found"  title="This is what the joystick looks like, it's just like the joystick on your favorite gaming controller." /></p>
 
 <p>If you want to see the code that made the joystick work as a test, also the same code that is running the video example above, you can find that in the <em>Joystick_test.c</em> file. This is also the first complexity that
 I had completed.</p>
@@ -56,4 +56,4 @@ I had completed.</p>
 
 <p>I used the LCD screen to not only hold my messages, but it also the main spot or holding a players score.</p>
 
-<p>The picture shows the different custom characters that I have in the game. <br> <img src="custom_chars.JPG" alt="Custom characters not found!" title="This is an image showcasing all 8 custom characters that I created."/>
+<p>The picture shows the different custom characters that I have in the game. <br><br> <img src="custom_chars.JPG" alt="Custom characters not found!" title="This is an image showcasing all 8 custom characters that I created."/>

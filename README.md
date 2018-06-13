@@ -81,3 +81,9 @@ Below are the different Menu options one has to choose from.</p><br><br>
 <br><br></p>
 
 <img src="Training.JPG" alt="Training picture not found!" title="A picture of the Training screen option, in the Menu state." />
+
+<br><br>
+
+<h4>Quarter Notes</h4>
+
+<p>Here is the option for Quarter Notes. In this game, the player will only tap on the first lit LED, the other three are there to help the player with timing.</p>

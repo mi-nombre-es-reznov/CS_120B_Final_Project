@@ -139,7 +139,9 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <p>Here is the option for Performance Mode. This option is still in <b>BETA</b> and is not available for actual gameplay yet.</p><br><br>
 
-<img src="Performance.JPG" alt="Performance Mode picture not found!" title="This is the option Menu screen for the 'in the making' Performance mode"/>
+<img src="Performance.JPG" alt="Performance Mode picture not found!" title="This is the option Menu screen for the 'in the making' Performance mode"/><br>
+
+<img src="perf_mode_not_ready.JPG" alt="Peformance Mode LED picture not found!" title="This is the current screen when selecting Performance Mode"/><br>
 
 <br><br>
 

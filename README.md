@@ -59,7 +59,7 @@ I had completed.</p>
 <h3>The Start Screen</h3>
 
 <p>This picture shows the Start menu screen, with two of the custom characters being implemented. <br><br> <img src="Press_Start.JPG" alt="Part 1 of Start Screen not found!" title="Here is the first of the two pictures,
- from the Start Screen."/></p>
+from the Start Screen."/></p>
  
 <p>The picture shows the different custom characters that I have in the game. <br><br> <img src="custom_chars.JPG" alt="Custom characters not found!" title="This is an image showcasing all 8 custom characters that I created."/>
 

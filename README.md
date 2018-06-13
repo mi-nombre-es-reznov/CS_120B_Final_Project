@@ -131,7 +131,7 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <img src="Sixteenth_Notes.JPG" alt="Sixteenth Notes picture not found!" title="This is the option menu for the Sixteenth Notes"/><br>
 
-<img src="16th.JPG" alt="Sixteenth Note LED picture not found!" title="These are the Sixteenth Notes LED lights to be hit."/>
+<img src="16th_LEDs.JPG" alt="Sixteenth Note LED picture not found!" title="These are the Sixteenth Notes LED lights to be hit."/>
 
 <br><br>
 

@@ -94,7 +94,7 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <h4>Half Notes</h4>
 
-<p>Here is the option for Half Notes. In this game, the player will only tap on the first and third lit LEDs, the other three are there to help the player with timing.</p><br><br>
+<p>Here is the option for Half Notes. In this game, the player will only tap on the first and third lit LEDs, the others are there to help the player with timing.</p><br><br>
 
 <img src="Half_Notes.JPG" alt="Half Notes picture not found!" title="This is the option menu for the Half Notes"/>
 

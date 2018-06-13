@@ -46,3 +46,5 @@ test if it works properly. If this test code works as intended, then I shall sti
 <strong>The video showing some results from the test is found <a href="https://youtu.be/vbepWqkhsp4" title="An early model of the working joystick">HERE!</strong></a></p>
 
 <p>The joystick looks like this: <br> <img src="joystick.JPG" alt="Joystick image not found"  title="This is what the joystick looks like, it's just like the joystck on your favorite gaming controller." /></p>
+
+<p>If you want to see the code that made the joystick work as a test, also the same code that is running the video example above, you can find that in the <em>Joystick_test.c</em> file.</p>

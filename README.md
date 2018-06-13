@@ -86,4 +86,6 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <h4>Quarter Notes</h4>
 
-<p>Here is the option for Quarter Notes. In this game, the player will only tap on the first lit LED, the other three are there to help the player with timing.</p>
+<p>Here is the option for Quarter Notes. In this game, the player will only tap on the first lit LED, the other three are there to help the player with timing.</p><br><br>
+
+<img src="Quarter_Notes.JPG" alt="Quarter Notes picture not found!" title="This is the option menu for the Quarter Notes"/>

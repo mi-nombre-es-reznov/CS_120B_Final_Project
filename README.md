@@ -75,4 +75,7 @@ two pictures, from the Start Screen."/></p><br>
 <p>The Menu screen state, found in <em>menu_options.c</em>, holds the different gameplay options. It has both the <em>"Training"</em> and <em>"Performance"</em> mode in it, although, the Performance mode currently isn't operable.
 Below are the different Menu options one has to choose from.</p><br><br>
 
+<p>Here is the Training option Menu Screen. This option does not have an ability to be selected, as the options for this can be selected by scrolling up (and down after you begin with the initial up).
+<br><br></p>
+
 <img src="Training.JPG" alt="Training picture not found!" title="A picture of the Training screen option, in the Menu state." />

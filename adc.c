@@ -1,10 +1,3 @@
-/*
-* adc.c
-*
-* Created: 6/21/2012 10:22:53 AM
-*  Author: EX4
-*/
-
 //lib
 #include "adc.h"
 

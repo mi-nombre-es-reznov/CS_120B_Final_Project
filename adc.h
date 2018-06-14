@@ -1,20 +1,3 @@
-/*
- * adc.h
- *
- * Created: 6/21/2012 10:22:44 AM
- *  Author: EX4
- */ 
-/**
-*  @defgroup ex4_adc ADC
-*  @code #include "adc.h" @endcode
-*
-*  @brief	ADC AVR internal library.
-*
-*  @note	-
-*  @author	EX4 ekapujiw2002@gmail.com  http://ex4-tech.id.or.id
-*/
-/**@{*/
-
 #ifndef ADC_H_
 #define ADC_H_
 

@@ -155,4 +155,6 @@ Below are the different Menu options one has to choose from.</p><br><br>
 
 <br><br><br><br>
 
-<img src="END.jpg" alt="Ending not found!" title="This is the end!!!"/>
+<h1>This is it!</h1>
+
+<img src="END.jpg" alt="Ending not found!" title="This is the end!!!" width"500" height="auto"/>

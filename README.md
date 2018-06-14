@@ -152,3 +152,7 @@ Below are the different Menu options one has to choose from.</p><br><br>
 <p>The game utilizes the joystick as input to navigate around through gameplay options, but I also have two IR sensors that will also accept input during the actual gameplay.<br><br></p>
 
 <img src="IR_Sensor.jpg" alt="IR Sensor picture not found!" title="A picture of one of the two sensors that will be available to use during the actual gameplay."/>
+
+<br><br><br><br>
+
+<img src="END.jpg" alt="Ending not found!" title="This is the end!!!"/>
